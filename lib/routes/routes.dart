@@ -74,6 +74,9 @@ class Routes {
     '/rooms/manage': (context) => AdminPanelLayout(child: FcManageRoomsPage()),
 
     '/documents': (context) => AdminPanelLayout(child: FcDocumentsPage()),
+    '/documents/add': (context) => AdminPanelLayout(child: FcCreateDocumentsPage()),
+
+    '/planning': (context) => AdminPanelLayout(child: FcPlanningPage()),
 
     '/chatbot': (context) => AdminPanelLayout(child: FcChatGPT()),
 
