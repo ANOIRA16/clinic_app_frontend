@@ -42,7 +42,7 @@ import 'package:fx_flutterap_template/default_template/structure/structure_style
 import '../components/page_widgets/fc_dashboard/fx_chat_screen.dart';
 
 class FcDashboard extends StatelessWidget {
-  static const routeName = '/fc-dashboard';
+  static const routeName = '/dashboard';
 
   const FcDashboard({Key? key}) : super(key: key);
 

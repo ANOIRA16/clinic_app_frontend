@@ -61,7 +61,7 @@ class Routes {
     ),
 
 
-    '/': (context) => AdminPanelLayout(child: FcDashboard()),
+    '/dashboard': (context) => AdminPanelLayout(child: FcDashboard()),
 
     '/patients': (context) => AdminPanelLayout(child: FcPatientsPage()),
     '/patients/add': (context) => AdminPanelLayout(child: FcCreatePatientPage()),
@@ -78,6 +78,6 @@ class Routes {
     '/chatbot': (context) => AdminPanelLayout(child: FcChatGPT()),
 
 
-    '/fc-empty_screen': (context) => AdminPanelLayout(child: FcEmptyScreen()),
+    '/': (context) => AdminPanelLayout(child: FcEmptyScreen()),
   };
 }

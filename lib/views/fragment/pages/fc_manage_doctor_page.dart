@@ -10,11 +10,13 @@ class Doctor {
   int id;
   String name;
   String specialization;
+  List<PatientResponse> patientResponseList;
 
   Doctor({
     this.id = 0,
     required this.name,
     required this.specialization,
+    this.patientResponseList = const [],
   });
 
   Map<String, dynamic> toJson() {
@@ -22,13 +24,56 @@ class Doctor {
       'id': id,
       'name': name,
       'specialization': specialization,
+      'patientResponseList': patientResponseList.map((e) => e.toJson()).toList(),
     };
+  }
+
+  factory Doctor.fromJson(Map<String, dynamic> json) {
+    return Doctor(
+      id: json['id'],
+      name: json['name'],
+      specialization: json['specialization'],
+      patientResponseList: (json['patientResponseList'] as List)
+          .map((e) => PatientResponse.fromJson(e))
+          .toList(),
+    );
+  }
+}
+
+class PatientResponse {
+  int id;
+  String name;
+  int age;
+  String gender;
+
+  PatientResponse({
+    this.id = 0,
+    required this.name,
+    required this.age,
+    required this.gender,
+  });
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'name': name,
+      'age': age,
+      'gender': gender,
+    };
+  }
+
+  factory PatientResponse.fromJson(Map<String, dynamic> json) {
+    return PatientResponse(
+      id: json['id'],
+      name: json['name'],
+      age: json['age'],
+      gender: json['gender'],
+    );
   }
 }
 
 class FcManageDoctorPage extends StatefulWidget {
   static const routeName = '/doctor/manage';
-
   final Doctor? doctor; // Make Doctor optional
 
   FcManageDoctorPage({this.doctor});
@@ -38,81 +83,204 @@ class FcManageDoctorPage extends StatefulWidget {
 }
 
 class _FcManageDoctorPageState extends State<FcManageDoctorPage> {
+  int? selectedDoctorId;
+  late TextEditingController idController;
   late TextEditingController nameController;
   late TextEditingController specializationController;
-  int? selectedDoctorId;
-  List<DropdownMenuItem<int>> doctorIds = []; // Populate this list with doctor IDs
+  late List<Doctor> doctorsList;
+  List<DropdownMenuItem<int>> doctorIds = [];
 
   @override
   void initState() {
     super.initState();
+    idController = TextEditingController();
     nameController = TextEditingController();
     specializationController = TextEditingController();
-    // TODO: Fetch the list of doctors and populate `doctorIds` here
+    doctorsList = [];
+    fetchDoctors().then((fetchedDoctors) {
+      setState(() {
+        doctorsList = fetchedDoctors;
+      });
+    }).catchError((error) {
+      // Handle error, e.g., show an error message
+      print('Error fetching doctors: $error');
+    });
   }
 
-  // Method to add a doctor
-  Future<void> addDoctor() async {
-    // Implement your logic for adding a doctor
+  void findDoctorById(int doctorId) {
+    Doctor foundDoctor = doctorsList.firstWhere(
+          (doctor) => doctor.id == doctorId,
+      orElse: () => Doctor(id: -1, name: 'Not Found', specialization: ''),
+    );
+
+    if (foundDoctor.id != -1) {
+      nameController.text = foundDoctor.name;
+      specializationController.text = foundDoctor.specialization;
+    } else {
+      // Doctor not found logic
+      nameController.clear();
+      specializationController.clear();
+    }
   }
 
-  // Method to update a doctor
-  Future<void> updateDoctor(int doctorId) async {
-    // Implement your logic for updating a doctor
+
+  Future<List<Doctor>> fetchDoctors() async {
+    try {
+      final response = await http.get(
+          Uri.parse('http://localhost:8081/api/doctor/doctors'));
+
+      if (response.statusCode == 200) {
+        List<dynamic> doctorsData = json.decode(response.body);
+        List<Doctor> fetchedDoctors = doctorsData.map((data) =>
+            Doctor.fromJson(data)).toList();
+        return fetchedDoctors; // Add this return statement
+      } else {
+        throw Exception('Failed to load doctors');
+      }
+    } catch (e) {
+      throw e;
+    }
   }
+
+    Future<void> addDoctor(Doctor doctor) async {
+      final response = await http.post(
+        Uri.parse('http://localhost:8081/api/doctor/add'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(doctor.toJson()),
+      );
+      if (response.statusCode != 200) {
+        throw Exception('Failed to add doctor');
+      }
+    }
+
+    Future<void> updateDoctor(Doctor doctor) async {
+      final response = await http.put(
+        Uri.parse('http://localhost:8081/api/doctor/${doctor.id}'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(doctor.toJson()),
+      );
+      if (response.statusCode != 200) {
+        throw Exception('Failed to update doctor');
+      }
+    }
+
+  Future<void> deleteDoctor(int doctorId) async {
+    final response = await http.delete(
+      Uri.parse('http://localhost:8081/api/doctor/${doctorId}'),
+    );
+    if (response.statusCode != 200) {
+      throw Exception('Failed to delete doctor');
+    } else {
+      // Post-deletion logic (optional)
+      // Example: Refresh the list of doctors after successful deletion
+      fetchDoctors();
+    }
+  }
+
+
+
+
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(AppLocalizations.of(context)!.manage_doctor),
+        title: Text('Manage Doctors'),
       ),
       body: SingleChildScrollView(
         padding: EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            DropdownButtonFormField<int>(
-              value: selectedDoctorId,
-              items: doctorIds,
-              onChanged: (value) {
-                setState(() {
-                  selectedDoctorId = value;
-                  // TODO: Load the selected doctor's details into the text fields
-                });
-              },
+            // Text Field for entering doctor's ID
+            TextFormField(
+              controller: idController,
               decoration: InputDecoration(
-                labelText: AppLocalizations.of(context)!.select_doctor,
+                labelText: 'Doctor ID',
+                border: OutlineInputBorder(),
               ),
+              keyboardType: TextInputType.number,
+              onChanged: (value) {
+                if (value.isNotEmpty) {
+                  int doctorId = int.tryParse(value) ?? -1;
+                  findDoctorById(doctorId);
+                }
+              },
             ),
+            SizedBox(height: 20),
+
+            // Text field for doctor's name
             TextFormField(
               controller: nameController,
-              decoration: InputDecoration(labelText: AppLocalizations.of(context)!.name),
+              decoration: InputDecoration(
+                labelText: 'Doctor Name',
+                border: OutlineInputBorder(),
+              ),
             ),
+            SizedBox(height: 20),
+
+            // Text field for doctor's specialization
             TextFormField(
               controller: specializationController,
-              decoration: InputDecoration(labelText: AppLocalizations.of(context)!.specialization),
+              decoration: InputDecoration(
+                labelText: 'Specialization',
+                border: OutlineInputBorder(),
+              ),
             ),
-            SizedBox(height: 20), // Add spacing between the form and the buttons
+            SizedBox(height: 20),
+
+            // Button Row for Add, Update, Delete
             Row(
               children: <Widget>[
+                // Add Doctor Button
                 Expanded(
                   child: ElevatedButton(
                     onPressed: () async {
-                      await addDoctor();
-                      // Post-add logic here
+                      Doctor newDoctor = Doctor(
+                        name: nameController.text,
+                        specialization: specializationController.text,
+                      );
+                      await addDoctor(newDoctor);
+                      // Update UI or show confirmation
                     },
-                    child: Text(AppLocalizations.of(context)!.add_doctor),
+                    child: Text('Add Doctor'),
                   ),
                 ),
-                SizedBox(width: 20), // Spacing between buttons
+                SizedBox(width: 10),
+                // Update Doctor Button
                 Expanded(
                   child: ElevatedButton(
-                    onPressed: selectedDoctorId != null ? () async {
-                      await updateDoctor(selectedDoctorId!);
-                      // Post-update logic here
-                    } : null, // Disable the button if no doctor is selected
-                    child: Text(AppLocalizations.of(context)!.update_doctor),
+                    onPressed: () async {
+                      if (idController.text.isNotEmpty) {
+                        int doctorId = int.tryParse(idController.text) ?? -1;
+                        Doctor updatedDoctor = Doctor(
+                          id: doctorId,
+                          name: nameController.text,
+                          specialization: specializationController.text,
+                        );
+                        await updateDoctor(updatedDoctor);
+                        // Update UI or show confirmation
+                      }
+                    },
+                    child: Text('Update Doctor'),
+                  ),
+                ),
+                SizedBox(width: 10),
+                // Delete Doctor Button
+                Expanded(
+                  child: ElevatedButton(
+                    onPressed: () async {
+                      if (idController.text.isNotEmpty) {
+                        int doctorId = int.tryParse(idController.text) ?? -1;
+                        await deleteDoctor(doctorId);
+                        // Update UI or show confirmation
+                      }
+                    },
+                    child: Text('Delete Doctor'),
                   ),
                 ),
               ],
@@ -123,5 +291,3 @@ class _FcManageDoctorPageState extends State<FcManageDoctorPage> {
     );
   }
 }
-
-
