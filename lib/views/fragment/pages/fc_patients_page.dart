@@ -3,26 +3,30 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:fx_flutterap_template/default_template/components/fx_container_items.dart';
 import 'package:fx_flutterap_template/default_template/components/fx_main_bootstrap_container.dart';
 import 'package:fx_flutterap_template/default_template/structure/structure_styles.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
-// Patient model
 class Patient {
-  final String firstName;
-  final String lastName;
-  final String age;
-  final String phoneNumber;
-  final String address;
-  final String inChargeDoctor;
-  final String condition;
+  int id;
+  String name;
+  int age;
+  String gender;
 
   Patient({
-    required this.firstName,
-    required this.lastName,
+    required this.id,
+    required this.name,
     required this.age,
-    required this.phoneNumber,
-    required this.address,
-    required this.inChargeDoctor,
-    required this.condition,
+    required this.gender,
   });
+
+  factory Patient.fromJson(Map<String, dynamic> json) {
+    return Patient(
+      id: json['id'],
+      name: json['name'],
+      age: json['age'],
+      gender: json['gender'],
+    );
+  }
 }
 
 class FcPatientsPage extends StatefulWidget {
@@ -33,32 +37,30 @@ class FcPatientsPage extends StatefulWidget {
 }
 
 class _FcPatientsPageState extends State<FcPatientsPage> {
-  List<Patient> patients = [];
+  late Future<List<Patient>> patientsFuture;
+  String errorMessage = '';
 
   @override
   void initState() {
     super.initState();
-    fetchPatients();
+    patientsFuture = fetchPatients();
   }
 
-  // Placeholder for fetching patients from an API
-  Future<void> fetchPatients() async {
-    // TODO: Replace with an actual API call
-    final fetchedPatients = await Future.delayed(
-      Duration(seconds: 1),
-          () => [
-        Patient(firstName: 'John', lastName: 'Doe', age: '35', phoneNumber: '555-1234', address: '123 Main St', inChargeDoctor: 'Dr. Smith', condition: 'Flu'),
-        Patient(firstName: 'Jane', lastName: 'Smith', age: '28', phoneNumber: '555-5678', address: '456 Oak St', inChargeDoctor: 'Dr. Johnson', condition: 'Broken Arm'),
-        Patient(firstName: 'Alice', lastName: 'Johnson', age: '42', phoneNumber: '555-9876', address: '789 Pine St', inChargeDoctor: 'Dr. Davis', condition: 'Allergies'),
-        Patient(firstName: 'Bob', lastName: 'Williams', age: '50', phoneNumber: '555-4321', address: '321 Elm St', inChargeDoctor: 'Dr. Wilson', condition: 'High Blood Pressure'),
-        Patient(firstName: 'Eva', lastName: 'Davis', age: '19', phoneNumber: '555-8765', address: '654 Birch St', inChargeDoctor: 'Dr. Brown', condition: 'Fractured Leg'),
-        // Add more patients here
-      ],
-    );
+  Future<List<Patient>> fetchPatients() async {
+    try {
+      final response = await http.get(Uri.parse('http://localhost:8082/api/patient/patients'));
 
-    setState(() {
-      patients = fetchedPatients.take(5).toList(); // Limit to 5 patients
-    });
+      if (response.statusCode == 200) {
+        List<dynamic> patientsData = json.decode(response.body);
+        List<Patient> fetchedPatients = patientsData.map((data) => Patient.fromJson(data)).toList();
+        return fetchedPatients;
+      } else {
+        throw Exception('Failed to load patients');
+      }
+    } catch (e) {
+      errorMessage = e.toString();
+      throw e;
+    }
   }
 
   @override
@@ -73,55 +75,63 @@ class _FcPatientsPageState extends State<FcPatientsPage> {
         FxContainerItems(
           title: AppLocalizations.of(context)!.patients,
           information: "It is a patients screen located in fc_patients_page.dart",
-          child: Container(
-            width: double.infinity, // DataTable takes 100% of the width
-            child: DataTable(
-              columnSpacing: 38,
-              headingRowColor: MaterialStateColor.resolveWith((Set<MaterialState> states) {
-                return headerColor;
-              }),
-              dataRowColor: MaterialStateColor.resolveWith((Set<MaterialState> states) {
-                return rowColor;
-              }),
-              columns: [
-                DataColumn(label: Text('First Name', style: TextStyle(color: InitialStyle.primaryDarkColor))),
-                DataColumn(label: Text('Last Name', style: TextStyle(color: InitialStyle.primaryDarkColor))),
-                DataColumn(label: Text('Age', style: TextStyle(color: InitialStyle.primaryDarkColor))),
-                DataColumn(label: Text('Phone Number', style: TextStyle(color: InitialStyle.primaryDarkColor))),
-                DataColumn(label: Text('Address', style: TextStyle(color: InitialStyle.primaryDarkColor))),
-                DataColumn(label: Text('Doctor In-Charge', style: TextStyle(color: InitialStyle.primaryDarkColor))),
-                DataColumn(label: Text('Condition', style: TextStyle(color: InitialStyle.primaryDarkColor))),
-                DataColumn(label: Text('Actions', style: TextStyle(color: InitialStyle.primaryDarkColor))),
-              ],
-              rows: patients.map((patient) => DataRow(
-                cells: [
-                  DataCell(Text(patient.firstName, style: TextStyle(color: InitialStyle.primaryColor))),
-                  DataCell(Text(patient.lastName, style: TextStyle(color: InitialStyle.primaryColor))),
-                  DataCell(Text(patient.age, style: TextStyle(color: InitialStyle.primaryColor))),
-                  DataCell(Text(patient.phoneNumber, style: TextStyle(color: InitialStyle.primaryColor))),
-                  DataCell(Text(patient.address, style: TextStyle(color: InitialStyle.primaryColor))),
-                  DataCell(Text(patient.inChargeDoctor, style: TextStyle(color: InitialStyle.primaryColor))),
-                  DataCell(Text(patient.condition, style: TextStyle(color: InitialStyle.primaryColor))),
-                  DataCell(Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      IconButton(
-                        icon: Icon(Icons.edit, color: InitialStyle.warningColorRegular),
-                        onPressed: () {
-                          // TODO: Implement patient update logic
-                        },
-                      ),
-                      IconButton(
-                        icon: Icon(Icons.contact_page, color: InitialStyle.dangerColorRegular),
-                        onPressed: () {
-                          // TODO: Implement patient contact logic
-                        },
-                      ),
+          child: FutureBuilder<List<Patient>>(
+            future: patientsFuture,
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return Center(child: CircularProgressIndicator());
+              } else if (snapshot.hasError) {
+                return Center(child: Text('Error: ${snapshot.error}'));
+              } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                return Center(child: Text('No patients data available.'));
+              } else {
+                List<Patient> patients = snapshot.data!;
+                return Container(
+                  width: double.infinity,
+                  child: DataTable(
+                    columnSpacing: 38,
+                    headingRowColor: MaterialStateColor.resolveWith((Set<MaterialState> states) {
+                      return headerColor;
+                    }),
+                    dataRowColor: MaterialStateColor.resolveWith((Set<MaterialState> states) {
+                      return rowColor;
+                    }),
+                    columns: [
+                      DataColumn(label: Text('ID', style: TextStyle(color: InitialStyle.primaryDarkColor))),
+                      DataColumn(label: Text('Full Name', style: TextStyle(color: InitialStyle.primaryDarkColor))),
+                      DataColumn(label: Text('Age', style: TextStyle(color: InitialStyle.primaryDarkColor))),
+                      DataColumn(label: Text('Gender', style: TextStyle(color: InitialStyle.primaryDarkColor))),
+                      DataColumn(label: Text('Actions', style: TextStyle(color: InitialStyle.primaryDarkColor))),
                     ],
-                  )),
-                ],
-              )).toList(),
-            ),
+                    rows: patients.map((patient) => DataRow(
+                      cells: [
+                        DataCell(Text(patient.id.toString(), style: TextStyle(color: InitialStyle.primaryColor))),
+                        DataCell(Text(patient.name, style: TextStyle(color: InitialStyle.primaryColor))),
+                        DataCell(Text(patient.age.toString(), style: TextStyle(color: InitialStyle.primaryColor))),
+                        DataCell(Text(patient.gender, style: TextStyle(color: InitialStyle.primaryColor))),
+                        DataCell(Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            IconButton(
+                              icon: Icon(Icons.add_chart, color: InitialStyle.warningColorRegular),
+                              onPressed: () {
+                                // Add your action here
+                              },
+                            ),
+                            IconButton(
+                              icon: Icon(Icons.accessibility_new, color: InitialStyle.dangerColorRegular),
+                              onPressed: () {
+                                // Add your action here
+                              },
+                            ),
+                          ],
+                        )),
+                      ],
+                    )).toList(),
+                  ),
+                );
+              }
+            },
           ),
         ),
       ],

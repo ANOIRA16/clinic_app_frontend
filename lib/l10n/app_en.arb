@@ -888,8 +888,12 @@
 
 
 
+  "add_doctor" : "Add New Doctor",
+  "update_doctor" : "Update/Delete Doctor",
+  "select_doctor" : "Provide Doctor ID",
 
-
+  "view_rooms" : "View Available Rooms",
+  "no_rooms_available" : "Full !",
 
   "doctors": "Doctors",
 

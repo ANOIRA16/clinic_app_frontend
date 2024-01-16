@@ -2,49 +2,53 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:fx_flutterap_template/default_template/components/fx_container_items.dart';
 import 'package:fx_flutterap_template/default_template/components/fx_main_bootstrap_container.dart';
-import 'package:http/http.dart' as http;
+import 'package:fx_flutterap_components/components/fx_form/fx_text_field/fx_text_field_form.dart';
 import 'dart:convert';
-
+import 'package:http/http.dart' as http;
+import 'package:fx_flutterap_components/components/fx_button/fx_block_button.dart';
 
 class Patient {
-  String firstName = '';
-  String lastName = '';
-  String age = '';
-  String phoneNumber = '';
-  String address = '';
-  String inChargeDoctor = '';
-  String condition = '';
+  String? firstName;
+  String? lastName;
+  String? age;
+  String? gender;
+  String? inChargeDoctor;
+
+  Patient({
+    this.firstName,
+    this.lastName,
+    this.age,
+    this.gender,
+    this.inChargeDoctor,
+  });
 
   Map<String, dynamic> toJson() {
     return {
-      'firstName': firstName,
-      'lastName': lastName,
       'age': age,
-      'phoneNumber': phoneNumber,
-      'address': address,
-      'inChargeDoctor': inChargeDoctor,
-      'condition': condition,
+      'gender': gender,
+      'name': '$firstName $lastName',
+      'doctor_ids': [inChargeDoctor],
     };
+
   }
 }
 
 Future<void> createPatient(Patient patient) async {
-  final response = await http.post(
-    Uri.parse('http://localhost:8082/api/patient'),
+  final response = await http.Client().post(
+    Uri.parse('http://localhost:8082/api/patient/add'),
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
     },
-    body: jsonEncode(patient.toJson()), // Convert your Patient object to JSON
+    body: jsonEncode(patient.toJson()),
   );
-
   if (response.statusCode == 201) {
-    // Patient created successfully+
     print('Patient created successfully.');
   } else {
-    // Handle errors (e.g., display an error message)
     print('Error creating patient: ${response.statusCode}');
+    print('Response body: ${response.body}');
   }
 }
+
 
 class FcCreatePatientPage extends StatefulWidget {
   static const routeName = '/patients/add';
@@ -75,20 +79,26 @@ class _FcCreatePatientPageState extends State<FcCreatePatientPage> {
               key: _formKey,
               child: Column(
                 children: [
-                  _buildFormField('First Name', _newPatient.firstName),
-                  _buildFormField('Last Name', _newPatient.lastName),
-                  _buildFormField('Age', _newPatient.age),
-                  _buildFormField('Phone Number', _newPatient.phoneNumber),
-                  _buildFormField('Address', _newPatient.address),
-                  _buildFormField('In Charge Doctor', _newPatient.inChargeDoctor),
-                  _buildFormField('Condition', _newPatient.condition),
+                  _buildFormField('First Name', _newPatient.firstName ?? ''),
+                  _buildFormField('Last Name', _newPatient.lastName ?? ''),
+                  _buildFormField('Age', _newPatient.age ?? ''),
+                  _buildFormField('Gender', _newPatient.gender ?? ''),
+                  _buildFormField('In Charge Doctor', _newPatient.inChargeDoctor ?? ''),
                   SizedBox(height: 16),
                   ElevatedButton(
-                    onPressed: () {
-                      _submitForm();
-                    },
-                    child: Text('Submit'),
-                  ),
+                      onPressed: () {
+                        _submitForm();
+                      },
+                      child: Text('Add New Patient'),
+                      style: ElevatedButton.styleFrom(
+                      primary: Colors.blue, // Set the button background color
+                      onPrimary: Colors.white, // Set the text color
+                      padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0), // Set padding
+                      shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8.0), // Set rounded corners
+                      ),
+                      ),
+                    ),
                   SizedBox(height: 20),
                   _displayPatientInfo(),
                 ],
@@ -104,37 +114,35 @@ class _FcCreatePatientPageState extends State<FcCreatePatientPage> {
 
   Widget _buildFormField(String label, String value) {
     return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: TextFormField(
-        decoration: InputDecoration(labelText: label),
-        initialValue: value,
-        onChanged: (val) {
-          setState(() {
-            switch (label) {
-              case 'First Name':
-                _newPatient.firstName = val;
-                break;
-              case 'Last Name':
-                _newPatient.lastName = val;
-                break;
-              case 'Age':
-                _newPatient.age = val;
-                break;
-              case 'Phone Number':
-                _newPatient.phoneNumber = val;
-                break;
-              case 'Address':
-                _newPatient.address = val;
-                break;
-              case 'In Charge Doctor':
-                _newPatient.inChargeDoctor = val;
-                break;
-              case 'Condition':
-                _newPatient.condition = val;
-                break;
-            }
-          });
-        },
+      padding: const EdgeInsets.only(bottom: 20.0),
+      child: Container(
+
+        width: MediaQuery.of(context).size.width * 0.4,
+        child: FxTextFieldForm(
+          hint: "",
+          label: label,
+          onChanged: (val) {
+            setState(() {
+              switch (label) {
+                case 'First Name':
+                  _newPatient.firstName = val;
+                  break;
+                case 'Last Name':
+                  _newPatient.lastName = val;
+                  break;
+                case 'Age':
+                  _newPatient.age = val;
+                  break;
+                case 'Gender':
+                  _newPatient.gender = val;
+                  break;
+                case 'In Charge Doctor':
+                  _newPatient.inChargeDoctor = val;
+                  break;
+              }
+            });
+          },
+        ),
       ),
     );
   }
@@ -150,36 +158,40 @@ class _FcCreatePatientPageState extends State<FcCreatePatientPage> {
               'Patient Information',
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
-            SizedBox(height: 10),
+            SizedBox(height: 12),
             Text('First Name: ${_newPatient.firstName}'),
             Text('Last Name: ${_newPatient.lastName}'),
             Text('Age: ${_newPatient.age}'),
-            Text('Phone Number: ${_newPatient.phoneNumber}'),
-            Text('Address: ${_newPatient.address}'),
+            Text('Gender: ${_newPatient.gender}'),
             Text('In Charge Doctor: ${_newPatient.inChargeDoctor}'),
-            Text('Condition: ${_newPatient.condition}'),
           ],
         ),
       ),
     );
   }
 
-  void _submitForm() {
+  void _submitForm() async {
     final form = _formKey.currentState;
     if (form != null && form.validate()) {
-      // Perform the database insertion logic here
-      // Access the new patient data using _newPatient
-      // Clear the form
+      // Create a new Patient object from the form data
+      Patient newPatient = Patient(
+        firstName: _newPatient.firstName,
+        lastName: _newPatient.lastName,
+        age: _newPatient.age,
+        gender: _newPatient.gender,
+        inChargeDoctor: _newPatient.inChargeDoctor,
+      );
+
+      await createPatient(newPatient);
+
+
       form.reset();
-      // Reset the patient data
       setState(() {
         _newPatient.firstName = '';
         _newPatient.lastName = '';
         _newPatient.age = '';
-        _newPatient.phoneNumber = '';
-        _newPatient.address = '';
+        _newPatient.gender = '';
         _newPatient.inChargeDoctor = '';
-        _newPatient.condition = '';
       });
     }
   }

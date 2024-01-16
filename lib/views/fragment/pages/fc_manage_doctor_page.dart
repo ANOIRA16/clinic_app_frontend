@@ -1,26 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:fx_flutterap_template/default_template/components/fx_container_items.dart';
 import 'package:fx_flutterap_template/default_template/components/fx_main_bootstrap_container.dart';
 import 'package:fx_flutterap_template/default_template/structure/structure_styles.dart';
-
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class Doctor {
-  final String name;
-  final String specialization;
-  final String hospital;
-  final List<String> workingDays;
-  final Map<String, List<String>> workingHours;
-  final List<DateTime> vacationDates;
+  int id;
+  String name;
+  String specialization;
 
   Doctor({
+    this.id = 0,
     required this.name,
     required this.specialization,
-    required this.hospital,
-    required this.workingDays,
-    required this.workingHours,
-    required this.vacationDates,
   });
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'name': name,
+      'specialization': specialization,
+    };
+  }
 }
+
 class FcManageDoctorPage extends StatefulWidget {
   static const routeName = '/doctor/manage';
 
@@ -33,39 +38,53 @@ class FcManageDoctorPage extends StatefulWidget {
 }
 
 class _FcManageDoctorPageState extends State<FcManageDoctorPage> {
-  late Doctor doctor;
   late TextEditingController nameController;
   late TextEditingController specializationController;
-  late TextEditingController hospitalController;
-  String selectedDay = 'Monday';
-  String workingHours = '';
+  int? selectedDoctorId;
+  List<DropdownMenuItem<int>> doctorIds = []; // Populate this list with doctor IDs
 
   @override
   void initState() {
     super.initState();
-    doctor = widget.doctor ?? Doctor( // Use default values if doctor is not provided
-      name: '',
-      specialization: '',
-      hospital: '',
-      workingDays: [],
-      workingHours: {},
-      vacationDates: [],
-    );
-    nameController = TextEditingController(text: doctor.name);
-    specializationController = TextEditingController(text: doctor.specialization);
-    hospitalController = TextEditingController(text: doctor.hospital);
+    nameController = TextEditingController();
+    specializationController = TextEditingController();
+    // TODO: Fetch the list of doctors and populate `doctorIds` here
+  }
+
+  // Method to add a doctor
+  Future<void> addDoctor() async {
+    // Implement your logic for adding a doctor
+  }
+
+  // Method to update a doctor
+  Future<void> updateDoctor(int doctorId) async {
+    // Implement your logic for updating a doctor
   }
 
   @override
   Widget build(BuildContext context) {
-    ThemeData themeData = Theme.of(context);
-
-    return FxMainBootstrapContainer(
-      title: AppLocalizations.of(context)!.doctor_title_2,
-      list: [
-        Column(
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(AppLocalizations.of(context)!.manage_doctor),
+      ),
+      body: SingleChildScrollView(
+        padding: EdgeInsets.all(16.0),
+        child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            DropdownButtonFormField<int>(
+              value: selectedDoctorId,
+              items: doctorIds,
+              onChanged: (value) {
+                setState(() {
+                  selectedDoctorId = value;
+                  // TODO: Load the selected doctor's details into the text fields
+                });
+              },
+              decoration: InputDecoration(
+                labelText: AppLocalizations.of(context)!.select_doctor,
+              ),
+            ),
             TextFormField(
               controller: nameController,
               decoration: InputDecoration(labelText: AppLocalizations.of(context)!.name),
@@ -74,42 +93,35 @@ class _FcManageDoctorPageState extends State<FcManageDoctorPage> {
               controller: specializationController,
               decoration: InputDecoration(labelText: AppLocalizations.of(context)!.specialization),
             ),
-            TextFormField(
-              controller: hospitalController,
-              decoration: InputDecoration(labelText: AppLocalizations.of(context)!.hospital),
-            ),
-            DropdownButton<String>(
-              value: selectedDay,
-              onChanged: (value) {
-                setState(() {
-                  selectedDay = value!;
-                });
-              },
-              items: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
-                  .map((day) => DropdownMenuItem(value: day, child: Text(day)))
-                  .toList(),
-            ),
-            TextField(
-              onChanged: (value) {
-                setState(() {
-                  workingHours = value;
-                });
-              },
-              decoration: InputDecoration(labelText: AppLocalizations.of(context)!.working_hours),
+            SizedBox(height: 20), // Add spacing between the form and the buttons
+            Row(
+              children: <Widget>[
+                Expanded(
+                  child: ElevatedButton(
+                    onPressed: () async {
+                      await addDoctor();
+                      // Post-add logic here
+                    },
+                    child: Text(AppLocalizations.of(context)!.add_doctor),
+                  ),
+                ),
+                SizedBox(width: 20), // Spacing between buttons
+                Expanded(
+                  child: ElevatedButton(
+                    onPressed: selectedDoctorId != null ? () async {
+                      await updateDoctor(selectedDoctorId!);
+                      // Post-update logic here
+                    } : null, // Disable the button if no doctor is selected
+                    child: Text(AppLocalizations.of(context)!.update_doctor),
+                  ),
+                ),
+              ],
             ),
           ],
         ),
-      ],
-      bootstrapSizes: 'col-sm-16 col-ml-16 col-lg-16 col-xl-12',
-      description: AppLocalizations.of(context)!.manage_doctor,
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          // TODO: Implement logic to save changes
-          // Access updated values using nameController.text, specializationController.text, etc.
-          // Also, use selectedDay and workingHours as needed
-        },
-        child: Icon(Icons.save),
       ),
     );
   }
 }
+
+
