@@ -45,12 +45,14 @@ class PatientResponse {
   String name;
   int age;
   String gender;
+  List<int> doctorIds; // Added field for doctor IDs
 
   PatientResponse({
     this.id = 0,
     required this.name,
     required this.age,
     required this.gender,
+    this.doctorIds = const [],
   });
 
   Map<String, dynamic> toJson() {
@@ -59,6 +61,7 @@ class PatientResponse {
       'name': name,
       'age': age,
       'gender': gender,
+      'doctor_ids': doctorIds, // Include doctor IDs in the JSON
     };
   }
 
@@ -68,6 +71,7 @@ class PatientResponse {
       name: json['name'],
       age: json['age'],
       gender: json['gender'],
+      doctorIds: json['doctor_ids'] != null ? List<int>.from(json['doctor_ids']) : [],
     );
   }
 }
@@ -105,6 +109,19 @@ class _FcManageDoctorPageState extends State<FcManageDoctorPage> {
       // Handle error, e.g., show an error message
       print('Error fetching doctors: $error');
     });
+  }
+
+  Future<void> addPatientWithDoctors(PatientResponse patient) async {
+    final response = await http.post(
+      Uri.parse('http://localhost:8082/api/patient/addwithdoctors'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(patient.toJson()),
+    );
+    if (response.statusCode != 200) {
+      throw Exception('Failed to add patient');
+    }
   }
 
   void findDoctorById(int doctorId) {
@@ -291,3 +308,4 @@ class _FcManageDoctorPageState extends State<FcManageDoctorPage> {
     );
   }
 }
+
