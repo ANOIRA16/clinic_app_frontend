@@ -35,7 +35,7 @@ class Patient {
 
 Future<void> createPatient(Patient patient) async {
   final response = await http.Client().post(
-    Uri.parse('http://localhost:8082/api/patient/add'),
+    Uri.parse('https://patient-service-2gol.onrender.com/api/patient/add'),
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
     },

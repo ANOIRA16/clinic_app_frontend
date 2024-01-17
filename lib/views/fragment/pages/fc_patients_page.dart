@@ -5,6 +5,7 @@ import 'package:fx_flutterap_template/default_template/components/fx_main_bootst
 import 'package:fx_flutterap_template/default_template/structure/structure_styles.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:dio/dio.dart';
 
 class Patient {
   int id;
@@ -46,9 +47,11 @@ class _FcPatientsPageState extends State<FcPatientsPage> {
     patientsFuture = fetchPatients();
   }
 
+
+
   Future<List<Patient>> fetchPatients() async {
     try {
-      final response = await http.get(Uri.parse('http://localhost:8082/api/patient/patients'));
+      final response = await http.get(Uri.parse('https://patient-service-2gol.onrender.com/api/patient/patients'));
 
       if (response.statusCode == 200) {
         List<dynamic> patientsData = json.decode(response.body);
