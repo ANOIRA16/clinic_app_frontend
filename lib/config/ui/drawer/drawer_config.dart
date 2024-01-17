@@ -1,5 +1,3 @@
-
-
 import 'package:clinic_app_frontend/routes/initial_page.dart';
 import 'package:clinic_app_frontend/views/fragment/pages/fc_chat_gpt.dart';
 import 'package:clinic_app_frontend/views/fragment/pages/fc_dashboard.dart';
@@ -18,6 +16,7 @@ import '../../../views/fragment/pages/fc_doctors_page.dart';
 import '../../../views/fragment/pages/fc_manage_doctor_page.dart';
 import '../../../views/fragment/pages/fc_rooms_page.dart';
 import '../../../views/fragment/pages/fc_manage_rooms_page.dart';
+import '../../../views/fragment/pages/fc_manage_planning.dart';
 import '../../../views/fragment/pages/fc_dashboard.dart';
 
 
@@ -43,7 +42,7 @@ class DrawerConfig extends StatelessWidget {
       'submenu': [
         {
           'title': "Create New Patient",
-          'iconPath': "packages/fx_flutterap_components/assets/svgs/add.svg",
+          'iconPath': "",
           'routeName': FcCreatePatientPage.routeName,
           'isReturnable': false,
           'submenu': [],
@@ -133,7 +132,7 @@ class DrawerConfig extends StatelessWidget {
     {
       'title': "Planning",
       'iconPath': "packages/fx_flutterap_components/assets/svgs/notification.svg",
-      'routeName': FcEmptyScreen.routeName,
+      'routeName': FcManagePlanning.routeName,
       'isReturnable': false,
       'submenu': [],
     },

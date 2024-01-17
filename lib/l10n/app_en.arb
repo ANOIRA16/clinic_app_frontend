@@ -467,11 +467,11 @@
   "email": "Email",
   "like": "Like",
   "completetheprofile": "Complete the profile",
-  "skills": "Skills",
-  "software": "Soft Ware",
-  "design": "Design",
-  "seo": "SEO",
-  "followers": "Followers",
+  "skills": "Statistics",
+  "software": "Room Availability Overview",
+  "design": "Gender Ratio",
+  "seo": "Inventory of Medecine",
+  "followers": "Total Patients",
   "income": "Income",
   "date": "Date",
   "profilepage": "Profile page",
@@ -688,9 +688,9 @@
   "platformstatus": "Platform status",
   "growthrate": "Growth rate",
 
-  "participation": "Participation",
-  "adaccess": "Ad access",
-  "engagement": "engagement",
+  "participation": "Patient Satisfaction",
+  "adaccess": "Revenues",
+  "engagement": "Community & Audience",
   "saleschart": "Sales chart",
 
   "adminpaneltitle": "Project Admin View",
@@ -881,9 +881,9 @@
   "pleaseediteventname": "Please edit the name of the event if you wish:",
 
   "patients": "Patients Page",
-  "patient_title_1" : "Patient Module",
+  "patient_title_1" : "Patient",
 
-  "addPatient" : "Add New Patient to the Database",
+  "addPatient" : "Add New Patient",
   "contactPatient": "Contact Patient",
 
 

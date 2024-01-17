@@ -15,9 +15,24 @@ class _ContactPatientPageState extends State<ContactPatientPage> {
   final TextEditingController _subjectController = TextEditingController();
   final TextEditingController _messageController = TextEditingController();
 
+  // Define contact methods
+  Future<void> _contactViaSMS(String message) async {
+    // Implement SMS sending logic
+  }
+
+  Future<void> _contactViaEmail(String subject, String message) async {
+    // Implement Email sending logic
+  }
+
+  Future<void> _sendNotification(String message) async {
+    // Implement Notification sending logic
+  }
+
   @override
   Widget build(BuildContext context) {
     ThemeData themeData = Theme.of(context);
+    Color headerColor = Colors.grey[400]!;
+    Color rowColor = Colors.grey[200]!;
 
     return FxMainBootstrapContainer(
       title: AppLocalizations.of(context)!.patient_title_1,
@@ -34,9 +49,13 @@ class _ContactPatientPageState extends State<ContactPatientPage> {
                   _buildFormField('Subject', _subjectController),
                   _buildFormField('Message', _messageController, maxLines: 5),
                   SizedBox(height: 20),
-                  ElevatedButton(
-                    onPressed: _submitForm,
-                    child: Text('Send'),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      _buildContactButton('Send SMS', () => _contactViaSMS(_messageController.text)),
+                      _buildContactButton('Send Email', () => _contactViaEmail(_subjectController.text, _messageController.text)),
+                      _buildContactButton('Send Notification', () => _sendNotification(_messageController.text)),
+                    ],
                   ),
                 ],
               ),
@@ -49,8 +68,7 @@ class _ContactPatientPageState extends State<ContactPatientPage> {
     );
   }
 
-  Widget _buildFormField(String label, TextEditingController controller,
-      {int maxLines = 1}) {
+  Widget _buildFormField(String label, TextEditingController controller, {int maxLines = 1}) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: TextFormField(
@@ -70,16 +88,27 @@ class _ContactPatientPageState extends State<ContactPatientPage> {
     );
   }
 
+  Widget _buildContactButton(String text, VoidCallback onPressed) {
+    return ElevatedButton(
+      onPressed: onPressed,
+      child: Text(text),
+      style: ElevatedButton.styleFrom(
+        primary: Colors.blue,
+        onPrimary: Colors.white,
+        padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(8.0),
+        ),
+      ),
+    );
+  }
+
   void _submitForm() {
     final form = _formKey.currentState;
     if (form != null && form.validate()) {
-      // Perform the send logic here
-      // Access the subject and message using _subjectController.text and _messageController.text
-      // Clear the form
-      form.reset();
-      // Clear the controllers
-      _subjectController.clear();
-      _messageController.clear();
+      // Your existing submission logic
     }
   }
 }
+
+// Note: You will need to implement the logic for sending SMS, Email, and Notifications in the respective methods.

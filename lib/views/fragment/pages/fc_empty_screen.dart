@@ -12,6 +12,7 @@ class FcEmptyScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     List list = [
       FxContainerItems(
           title: AppLocalizations.of(context)!.emptyscreen,

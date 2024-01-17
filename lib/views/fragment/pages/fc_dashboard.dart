@@ -232,7 +232,7 @@ class FcDashboard extends StatelessWidget {
       AppLocalizations.of(context)!.seo,
     ];
 
-    List<double> percentList = [27, 60, 27];
+    List<double> percentList = [71, 50, 24];
 
     List<Color> colorList = [
       InitialStyle.primaryColor,
@@ -322,43 +322,49 @@ class FcDashboard extends StatelessWidget {
         children: [
           BootstrapRow(
             children: [
-              cardShow3(FxStatisticCard2(
+              cardShow4(FxStatisticCard2(
                 imagePath:
                     "packages/fx_flutterap_components/assets/svgs/profilecircle.svg",
-                number: "313",
+                number: "13",
                 description: AppLocalizations.of(context)!.followers,
                 hasGrown: false,
               )),
               cardShow3(FxStatisticCard2(
                 imagePath:
                     "packages/fx_flutterap_components/assets/svgs/shoppingcart.svg",
-                number: "27.3%",
+                number: "97.3%",
                 description: AppLocalizations.of(context)!.participation,
               )),
               cardShow3(FxStatisticCard2(
                 imagePath:
                     "packages/fx_flutterap_components/assets/svgs/dollarsquare.svg",
-                number: "313K",
-                changePercent: "17%",
+                number: "1500\$",
+                changePercent: "2.5%",
                 description: AppLocalizations.of(context)!.adaccess,
-                hasGrown: false,
+                hasGrown: true,
               )),
-              cardShow3(FxStatisticCard2(
+              cardShow4(FxStatisticCard2(
                 imagePath:
                     "packages/fx_flutterap_components/assets/svgs/favoritechart.svg",
                 number: "82.5K",
                 changePercent: "4.98%",
                 description: AppLocalizations.of(context)!.engagement,
               )),
-              cardShow4(FxGeneratedLeadsChart()),
-              cardShow8(FxWeatherCard()),
-              cardShow8(
+              cardShow9(
                 FxProgressListCard(
                   titleList: titleList,
                   colorList: colorList,
                   percentList: percentList,
                 ),
               ),
+              cardShow2(
+                  FxStatisticCard2(
+                    imagePath:
+                    "packages/fx_flutterap_components/assets/svgs/favoritechart.svg",
+                    number: "82.5K",
+                    changePercent: "4.98%",
+                    description: AppLocalizations.of(context)!.engagement,
+              )),
             ],
           ),
           BootstrapRow(
@@ -476,20 +482,13 @@ class FcDashboard extends StatelessWidget {
           ),
           BootstrapRow(
             children: [
-              cardShow6(
-                dashboardContainerItems(
-                  title: AppLocalizations.of(context)!.saleschart,
-                  child: SizedBox(
-                      height: InitialDims.space24 * 4,
-                      child: FxBarChartSample3()),
-                ),
-              ),
               cardShow7(
                 dashboardContainerItems(
                   title: AppLocalizations.of(context)!.activity,
                   child: SizedBox(
-                      height: InitialDims.space24 * 4,
-                      child: FxCircularChart()),
+                    height: InitialDims.space24 * 4,
+                    child: FxCircularChart(),
+                  ),
                 ),
               ),
             ],
@@ -548,12 +547,7 @@ class FcDashboard extends StatelessWidget {
               ),
             ],
           ),
-          cardShow1(dashboardContainerItems(
-              title: AppLocalizations.of(context)!.eventcalender,
-              child: FxGeogorianEventCalendar(
-                onViewChanged: (details) {},
-                onEditEvent: (details) {},
-              ))),
+
         ],
       ),
     ];
@@ -598,6 +592,6 @@ class FcDashboard extends StatelessWidget {
 
   Widget _boxShow(Widget widget) {
     return BootstrapCol(
-        sizes: 'col-sm-12 col-ml-12 col-lg-12 col-xl-12', child: widget);
+        sizes: 'col-sm-12 col-ml-12 col-lg-12 col-xl-16', child: widget);
   }
 }

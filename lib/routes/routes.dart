@@ -16,6 +16,7 @@ import '../views/fragment/pages/fc_manage_doctor_page.dart';
 import '../views/fragment/pages/fc_rooms_page.dart';
 import '../views/fragment/pages/fc_manage_rooms_page.dart';
 import '../views/fragment/pages/fc_documents_page.dart';
+import '../views/fragment/pages/fc_manage_planning.dart';
 import '../views/fragment/pages/fc_login.dart';
 import '../views/layout/admin_panel_layout.dart';
 import 'initial_page.dart';
@@ -74,6 +75,8 @@ class Routes {
     '/rooms/manage': (context) => AdminPanelLayout(child: FcManageRoomsPage()),
 
     '/documents': (context) => AdminPanelLayout(child: FcDocumentsPage()),
+
+    '/planning/manage': (context) => AdminPanelLayout(child: FcManagePlanning()),
 
     '/chatbot': (context) => AdminPanelLayout(child: FcChatGPT()),
 

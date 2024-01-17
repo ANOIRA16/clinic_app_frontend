@@ -83,13 +83,12 @@ class _FcCreatePatientPageState extends State<FcCreatePatientPage> {
                   _buildFormField('Last Name', _newPatient.lastName ?? ''),
                   _buildFormField('Age', _newPatient.age ?? ''),
                   _buildFormField('Gender', _newPatient.gender ?? ''),
-                  _buildFormField('In Charge Doctor', _newPatient.inChargeDoctor ?? ''),
                   SizedBox(height: 16),
                   ElevatedButton(
                       onPressed: () {
                         _submitForm();
                       },
-                      child: Text('Add New Patient'),
+                      child: Text('INSERT'),
                       style: ElevatedButton.styleFrom(
                       primary: Colors.blue, // Set the button background color
                       onPrimary: Colors.white, // Set the text color
