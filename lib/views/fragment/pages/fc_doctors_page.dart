@@ -45,7 +45,7 @@ class _FcDoctorsPageState extends State<FcDoctorsPage> {
 
   Future<List<Doctor>> fetchDoctors() async {
     try {
-      final response = await http.get(Uri.parse('http://localhost:8081/api/doctor/doctors'));
+      final response = await http.get(Uri.parse('https://doctor-service-5g8m.onrender.com/api/doctor/doctors'));
 
       if (response.statusCode == 200) {
         List<dynamic> doctorsData = json.decode(response.body);

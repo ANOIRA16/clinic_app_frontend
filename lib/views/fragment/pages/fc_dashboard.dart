@@ -63,19 +63,19 @@ class FcDashboard extends StatelessWidget {
 
     List<String> descriptionList = List.generate(
       4,
-      (index) => AppLocalizations.of(context)!.lorem,
+          (index) => AppLocalizations.of(context)!.lorem,
     );
     List<String> messageList = List.generate(
       4,
-      (index) => AppLocalizations.of(context)!.lorem,
+          (index) => AppLocalizations.of(context)!.lorem,
     );
     List<String> messageList2 = List.generate(
       2,
-      (index) => AppLocalizations.of(context)!.lorem,
+          (index) => AppLocalizations.of(context)!.lorem,
     );
     List<String> messageList3 = List.generate(
       5,
-      (index) => AppLocalizations.of(context)!.lorem,
+          (index) => AppLocalizations.of(context)!.lorem,
     );
     List<bool> valueList = List.generate(4, (index) {
       if (index == 2) return true;
@@ -324,20 +324,20 @@ class FcDashboard extends StatelessWidget {
             children: [
               cardShow4(FxStatisticCard2(
                 imagePath:
-                    "packages/fx_flutterap_components/assets/svgs/profilecircle.svg",
+                "packages/fx_flutterap_components/assets/svgs/profilecircle.svg",
                 number: "13",
                 description: AppLocalizations.of(context)!.followers,
                 hasGrown: false,
               )),
               cardShow3(FxStatisticCard2(
                 imagePath:
-                    "packages/fx_flutterap_components/assets/svgs/shoppingcart.svg",
+                "packages/fx_flutterap_components/assets/svgs/shoppingcart.svg",
                 number: "97.3%",
                 description: AppLocalizations.of(context)!.participation,
               )),
               cardShow3(FxStatisticCard2(
                 imagePath:
-                    "packages/fx_flutterap_components/assets/svgs/dollarsquare.svg",
+                "packages/fx_flutterap_components/assets/svgs/dollarsquare.svg",
                 number: "1500\$",
                 changePercent: "2.5%",
                 description: AppLocalizations.of(context)!.adaccess,
@@ -345,7 +345,7 @@ class FcDashboard extends StatelessWidget {
               )),
               cardShow4(FxStatisticCard2(
                 imagePath:
-                    "packages/fx_flutterap_components/assets/svgs/favoritechart.svg",
+                "packages/fx_flutterap_components/assets/svgs/favoritechart.svg",
                 number: "82.5K",
                 changePercent: "4.98%",
                 description: AppLocalizations.of(context)!.engagement,
@@ -357,14 +357,14 @@ class FcDashboard extends StatelessWidget {
                   percentList: percentList,
                 ),
               ),
-              cardShow2(
+              cardShow4(
                   FxStatisticCard2(
                     imagePath:
                     "packages/fx_flutterap_components/assets/svgs/favoritechart.svg",
-                    number: "82.5K",
-                    changePercent: "4.98%",
-                    description: AppLocalizations.of(context)!.engagement,
-              )),
+                    number: "88%",
+                    changePercent: "3.98%",
+                    description: AppLocalizations.of(context)!.platform_performance,
+                  )),
             ],
           ),
           BootstrapRow(
@@ -383,25 +383,25 @@ class FcDashboard extends StatelessWidget {
             children: [
               cardShow2(FxStatisticCard1(
                 imagePath:
-                    "packages/fx_flutterap_components/assets/svgs/shoppingcart.svg",
+                "packages/fx_flutterap_components/assets/svgs/shoppingcart.svg",
                 number: "314,314",
                 description: AppLocalizations.of(context)!.totalmonthlyorders,
               )),
               cardShow2(FxStatisticCard1(
                 imagePath:
-                    "packages/fx_flutterap_components/assets/svgs/dollarsquare.svg",
+                "packages/fx_flutterap_components/assets/svgs/dollarsquare.svg",
                 number: "4,7834,143",
                 description: AppLocalizations.of(context)!.totalincomethisyear,
               )),
               cardShow2(FxStatisticCard1(
                 imagePath:
-                    "packages/fx_flutterap_components/assets/svgs/favoritechart.svg",
+                "packages/fx_flutterap_components/assets/svgs/favoritechart.svg",
                 number: "314",
                 description: AppLocalizations.of(context)!.onlinemembership,
               )),
               cardShow2(FxStatisticCard1(
                 imagePath:
-                    "packages/fx_flutterap_components/assets/svgs/profilecircle.svg",
+                "packages/fx_flutterap_components/assets/svgs/profilecircle.svg",
                 number: "71,714",
                 description: AppLocalizations.of(context)!.memberbenefits,
               )),
@@ -510,7 +510,7 @@ class FcDashboard extends StatelessWidget {
               cardShow9(dashboardContainerItems(
                   title: AppLocalizations.of(context)!.earningreports,
                   widgetPadding:
-                      EdgeInsets.symmetric(horizontal: InitialDims.space2),
+                  EdgeInsets.symmetric(horizontal: InitialDims.space2),
                   child: FxEarningReports())),
             ],
           ),
@@ -569,9 +569,9 @@ class FcDashboard extends StatelessWidget {
                       ),
                       FxPageTitleContainer(
                         description:
-                            AppLocalizations.of(context)!.dashboardtitle,
+                        AppLocalizations.of(context)!.dashboardtitle,
                         information:
-                            "There are several dashboard card here, and you can use these components in fx_flutterap_editable_components/editable_components/fx_dashboard_card",
+                        "There are several dashboard card here, and you can use these components in fx_flutterap_editable_components/editable_components/fx_dashboard_card",
                       ),
                     ],
                   ),

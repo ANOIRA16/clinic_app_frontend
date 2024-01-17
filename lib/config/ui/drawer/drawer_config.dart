@@ -14,6 +14,7 @@ import '../../../views/fragment/pages/fc_create_patient_page.dart';
 import '../../../views/fragment/pages/fc_contact_patient_page.dart';
 import '../../../views/fragment/pages/fc_doctors_page.dart';
 import '../../../views/fragment/pages/fc_manage_doctor_page.dart';
+import '../../../views/fragment/pages/fc_manage_patient_page.dart';
 import '../../../views/fragment/pages/fc_rooms_page.dart';
 import '../../../views/fragment/pages/fc_manage_rooms_page.dart';
 import '../../../views/fragment/pages/fc_manage_planning.dart';
@@ -51,6 +52,13 @@ class DrawerConfig extends StatelessWidget {
           'title': "View All Patients",
           'iconPath': "",
           'routeName': FcPatientsPage.routeName,
+          'isReturnable': false,
+          'submenu': [],
+        },
+        {
+          'title': "Manage Patients",
+          'iconPath': "",
+          'routeName': FcManagePatientPage.routeName,
           'isReturnable': false,
           'submenu': [],
         },

@@ -205,26 +205,6 @@ class _FcChatGPTState extends State<FcChatGPT> {
                 ),
               ],
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                const FxVSpacer(big: true, factor: 3),
-                FxButton(
-                  text: 'GPT 1',
-                  onTap: onGPT1Interaction,
-                ),
-                const FxVSpacer(big: true, factor: 3),
-                FxButton(
-                  text: 'GPT 2',
-                  onTap: onGPT2Interaction,
-                ),
-                const FxVSpacer(big: true, factor: 3),
-                FxButton(
-                  text: 'GPT 3',
-                  onTap: onGPT3Interaction,
-                ),
-              ],
-            ),
           ],
         ),
       );
@@ -621,7 +601,7 @@ class _FcChatGPTState extends State<FcChatGPT> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           FxCardHeader(
-            title: AppLocalizations.of(context)!.information,
+            title: 'Chat with the AI',
           ),
           const FxVSpacer(),
           FxText(
@@ -648,11 +628,6 @@ class _FcChatGPTState extends State<FcChatGPT> {
             },
           ),
           const FxVSpacer(),
-          FxText(
-            AppLocalizations.of(context)!.beaware,
-            color: InitialStyle.dangerColorRegular,
-            tag: Tag.h4,
-          ),
         ],
       ),
     );

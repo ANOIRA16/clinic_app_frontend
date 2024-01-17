@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:clinic_app_frontend/views/fragment/pages/fc_manage_patient_page.dart';
 import 'package:flutter/material.dart';
 import 'package:clinic_app_frontend/views/fragment/pages/fc_chat_gpt.dart';
 import 'package:clinic_app_frontend/views/fragment/pages/fc_dashboard.dart';
@@ -17,6 +18,7 @@ import '../views/fragment/pages/fc_rooms_page.dart';
 import '../views/fragment/pages/fc_manage_rooms_page.dart';
 import '../views/fragment/pages/fc_documents_page.dart';
 import '../views/fragment/pages/fc_manage_planning.dart';
+import '../views/fragment/pages/fc_patients_page.dart';
 import '../views/fragment/pages/fc_login.dart';
 import '../views/layout/admin_panel_layout.dart';
 import 'initial_page.dart';
@@ -66,6 +68,7 @@ class Routes {
 
     '/patients': (context) => AdminPanelLayout(child: FcPatientsPage()),
     '/patients/add': (context) => AdminPanelLayout(child: FcCreatePatientPage()),
+    '/patient/manage': (context) => AdminPanelLayout(child: FcManagePatientPage()),
     '/patients/contact': (context) => AdminPanelLayout(child: ContactPatientPage()),
 
     '/doctors': (context) => AdminPanelLayout(child: FcDoctorsPage()),

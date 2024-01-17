@@ -113,7 +113,7 @@ class _FcManageDoctorPageState extends State<FcManageDoctorPage> {
 
   Future<void> addPatientWithDoctors(PatientResponse patient) async {
     final response = await http.post(
-      Uri.parse('http://localhost:8082/api/patient/addwithdoctors'),
+      Uri.parse('https://doctor-service-5g8m.onrender.com/api/doctor/add'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
