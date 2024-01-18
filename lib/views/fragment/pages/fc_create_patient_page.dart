@@ -66,6 +66,7 @@ class _FcCreatePatientPageState extends State<FcCreatePatientPage> {
     ThemeData themeData = Theme.of(context);
     Color headerColor = Colors.grey[400]!;
     Color rowColor = Colors.grey[200]!;
+    String? _selectedGender;
 
     return FxMainBootstrapContainer(
       title: AppLocalizations.of(context)!.patient_title_1,
@@ -111,6 +112,8 @@ class _FcCreatePatientPageState extends State<FcCreatePatientPage> {
     );
   }
 
+
+
   Widget _buildFormField(String label, String value) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 20.0),
@@ -134,9 +137,6 @@ class _FcCreatePatientPageState extends State<FcCreatePatientPage> {
                   break;
                 case 'Gender':
                   _newPatient.gender = val;
-                  break;
-                case 'In Charge Doctor':
-                  _newPatient.inChargeDoctor = val;
                   break;
               }
             });
@@ -162,7 +162,6 @@ class _FcCreatePatientPageState extends State<FcCreatePatientPage> {
             Text('Last Name: ${_newPatient.lastName}'),
             Text('Age: ${_newPatient.age}'),
             Text('Gender: ${_newPatient.gender}'),
-            Text('In Charge Doctor: ${_newPatient.inChargeDoctor}'),
           ],
         ),
       ),
@@ -178,7 +177,6 @@ class _FcCreatePatientPageState extends State<FcCreatePatientPage> {
         lastName: _newPatient.lastName,
         age: _newPatient.age,
         gender: _newPatient.gender,
-        inChargeDoctor: _newPatient.inChargeDoctor,
       );
 
       await createPatient(newPatient);
@@ -190,7 +188,6 @@ class _FcCreatePatientPageState extends State<FcCreatePatientPage> {
         _newPatient.lastName = '';
         _newPatient.age = '';
         _newPatient.gender = '';
-        _newPatient.inChargeDoctor = '';
       });
     }
   }
