@@ -10,21 +10,21 @@ class Room {
 final int roomId;
 final int beds;
 final String category;
-bool isAvailable;
+final bool isFull;
 
 Room({
   required this.roomId,
   required this.beds,
   required this.category,
-  this.isAvailable = true, // All rooms start as empty (available)
+  required this.isFull,
 });
 
 factory Room.fromJson(Map<String, dynamic> json) {
   return Room(
     roomId: json['roomId'] ?? 0,
     beds: json['beds'] ?? 0,
-    category: json['categorie'] as String? ?? 'Unknown',
-    isAvailable: (json['beds'] as int? ?? 0) > 0,
+    category: json['categorie'] as String? ?? 'CONSULTATION',
+    isFull: json['isFull'] ?? false,
   );
 
 }
@@ -47,7 +47,7 @@ class _FcRoomsPageState extends State<FcRoomsPage> {
   }
 
   Future<List<Room>> fetchRooms() async {
-    final response = await http.get(Uri.parse('http://localhost:8083/api/room/rooms'));
+    final response = await http.get(Uri.parse('https://room-service-sows.onrender.com/api/room/rooms'));
 
     if (response.statusCode == 200) {
       List<dynamic> roomsJson = json.decode(response.body);
@@ -130,7 +130,7 @@ class RoomCube extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      color: room.isAvailable ? Colors.green : Colors.red,
+      color: room.isFull ? Colors.green : Colors.red,
       child: Container(
         width: 100,
         height: 100,
