@@ -85,6 +85,7 @@ class _FcRoomsPageState extends State<FcRoomsPage> {
           // Assuming that you want to divide the rooms by category
           Map<String, List<Room>> categorizedRooms = {};
           for (var room in rooms) {
+            print(room);
             categorizedRooms.putIfAbsent(room.category, () => []);
             categorizedRooms[room.category]!.add(room);
           }
@@ -130,7 +131,7 @@ class RoomCube extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      color: room.isFull ? Colors.green : Colors.red,
+      color: room.isFull ? Colors.red : Colors.green,
       child: Container(
         width: 100,
         height: 100,

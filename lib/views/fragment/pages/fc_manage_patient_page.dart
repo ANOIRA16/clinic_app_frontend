@@ -117,7 +117,7 @@ class _FcManagePatientPageState extends State<FcManagePatientPage> {
   Future<List<String>> fetchRooms() async {
     try {
       // Replace the URL with the endpoint to fetch rooms
-      final response = await http.get(Uri.parse('https://Room-service-sows.onrender.com/api/room/rooms'));
+      final response = await http.get(Uri.parse('https://room-service-sows.onrender.com/api/room/rooms'));
 
       if (response.statusCode == 200) {
         List<dynamic> roomsData = json.decode(response.body);

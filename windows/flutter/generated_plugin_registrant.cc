@@ -8,6 +8,7 @@
 
 #include <audioplayers_windows/audioplayers_windows_plugin.h>
 #include <file_saver/file_saver_plugin.h>
+#include <firebase_core/firebase_core_plugin_c_api.h>
 #include <local_notifier/local_notifier_plugin.h>
 #include <pasteboard/pasteboard_plugin.h>
 #include <permission_handler_windows/permission_handler_windows_plugin.h>
@@ -19,6 +20,8 @@ void RegisterPlugins(flutter::PluginRegistry* registry) {
       registry->GetRegistrarForPlugin("AudioplayersWindowsPlugin"));
   FileSaverPluginRegisterWithRegistrar(
       registry->GetRegistrarForPlugin("FileSaverPlugin"));
+  FirebaseCorePluginCApiRegisterWithRegistrar(
+      registry->GetRegistrarForPlugin("FirebaseCorePluginCApi"));
   LocalNotifierPluginRegisterWithRegistrar(
       registry->GetRegistrarForPlugin("LocalNotifierPlugin"));
   PasteboardPluginRegisterWithRegistrar(

@@ -11,6 +11,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../views/fragment/pages/fc_empty_screen.dart';
 import '../views/fragment/pages/fc_patients_page.dart';
 import '../views/fragment/pages/fc_create_patient_page.dart';
+import '../views/fragment/pages/fc_create_documents_page.dart';
 import '../views/fragment/pages/fc_contact_patient_page.dart';
 import '../views/fragment/pages/fc_doctors_page.dart';
 import '../views/fragment/pages/fc_manage_doctor_page.dart';
@@ -34,7 +35,7 @@ class Routes {
 
 
   static void checkLogin(BuildContext context, String username, String password) {
-    if (username == 'demo' && password == 'demo') {
+    if (username == 'admin' && password == 'admin') {
       Navigator.of(context).pushReplacementNamed('/');
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -71,6 +72,8 @@ class Routes {
     '/patient/manage': (context) => AdminPanelLayout(child: FcManagePatientPage()),
     '/patients/contact': (context) => AdminPanelLayout(child: ContactPatientPage()),
 
+
+
     '/doctors': (context) => AdminPanelLayout(child: FcDoctorsPage()),
     '/doctor/manage': (context) => AdminPanelLayout(child: FcManageDoctorPage()),
 
@@ -78,12 +81,13 @@ class Routes {
     '/rooms/manage': (context) => AdminPanelLayout(child: FcManageRoomsPage()),
 
     '/documents': (context) => AdminPanelLayout(child: FcDocumentsPage()),
+    '/documents/create': (context) => AdminPanelLayout(child: FcCreateDocumentsPage()),
 
     '/planning/manage': (context) => AdminPanelLayout(child: FcManagePlanning()),
 
     '/chatbot': (context) => AdminPanelLayout(child: FcChatGPT()),
 
 
-    '/': (context) => AdminPanelLayout(child: FcEmptyScreen()),
+    '/': (context) => AdminPanelLayout(child: FcDashboard()),
   };
 }

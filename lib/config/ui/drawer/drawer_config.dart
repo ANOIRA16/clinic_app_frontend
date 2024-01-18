@@ -1,5 +1,6 @@
 import 'package:clinic_app_frontend/routes/initial_page.dart';
 import 'package:clinic_app_frontend/views/fragment/pages/fc_chat_gpt.dart';
+import 'package:clinic_app_frontend/views/fragment/pages/fc_create_documents_page.dart';
 import 'package:clinic_app_frontend/views/fragment/pages/fc_dashboard.dart';
 import 'package:clinic_app_frontend/views/fragment/pages/fc_lock_screen.dart';
 import 'package:clinic_app_frontend/views/fragment/pages/fc_login.dart';
@@ -18,6 +19,8 @@ import '../../../views/fragment/pages/fc_manage_patient_page.dart';
 import '../../../views/fragment/pages/fc_rooms_page.dart';
 import '../../../views/fragment/pages/fc_manage_rooms_page.dart';
 import '../../../views/fragment/pages/fc_manage_planning.dart';
+import '../../../views/fragment/pages/fc_documents_page.dart';
+import '../../../views/fragment/pages/fc_create_documents_page.dart';
 import '../../../views/fragment/pages/fc_dashboard.dart';
 
 
@@ -124,14 +127,14 @@ class DrawerConfig extends StatelessWidget {
         {
           'title': "Create New Document",
           'iconPath': "",
-          'routeName': FcEmptyScreen.routeName,
+          'routeName': FcCreateDocumentsPage.routeName,
           'isReturnable': false,
           'submenu': [],
         },
         {
           'title': "View All Documents",
           'iconPath': "",
-          'routeName': FcEmptyScreen.routeName,
+          'routeName': FcDocumentsPage.routeName,
           'isReturnable': false,
           'submenu': [],
         },

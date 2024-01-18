@@ -1,128 +1,83 @@
+import 'dart:js';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:fx_flutterap_components/components/fx_form/fx_checkbox/fx_custom_check_box.dart';
-import 'package:fx_flutterap_components/components/fx_image/fx_svg_icon.dart';
-import 'package:fx_flutterap_components/components/fx_label/fx_content_label.dart';
-import 'package:fx_flutterap_components/components/fx_spacer/fx_h_spacer.dart';
-import 'package:fx_flutterap_components/components/fx_spacer/fx_v_spacer.dart';
-import 'package:fx_flutterap_components/components/fx_text/fx_text.dart';
-import 'package:fx_flutterap_template/default_template/structure/structure_dims.dart';
-import 'package:fx_flutterap_template/default_template/structure/structure_styles.dart';
 
-class FxTasksList extends StatefulWidget {
-  final List<bool>? valueList;
-  final List<String> descriptionList;
-  final List<String>? dateList;
+class FxTasksList extends StatelessWidget {
+  final List<String> dateList = [
+    "21July | 08:30-09:30",
+    "22July | 10:00-11:00",
+    "22July | 14:00-15:00",
+    "24July | 16:30-17:30",
+  ];
 
-  const FxTasksList({
-    Key? key,
-    this.valueList,
-    required this.descriptionList,
-    this.dateList,
-  }) : super(key: key);
+  final List<String> descriptionList = [
+    "Urgent Surgeries : Internal bleeding and broken ribs",
+    "Wound Treatment : Cuts and bruises on both knees",
+    "Medical Checkup : Room 11",
+    "Medication Review : Mr&Mrs Smith",
+  ];
 
-  @override
-  State<FxTasksList> createState() => _FxTasksListState();
-}
-
-class _FxTasksListState extends State<FxTasksList> {
   @override
   Widget build(BuildContext context) {
-    List<bool> valueList = widget.valueList ??
-        List.generate(
-          widget.descriptionList.length,
-          (index) => false,
-        );
-    List<String> dateList = widget.dateList ??
-        List.generate(
-          widget.descriptionList.length,
-          (index) => "21${AppLocalizations.of(context)!.july}| 08:20-10:30",
-        );
-
     return Container(
-      padding: EdgeInsets.symmetric(
-        horizontal: InitialDims.space1,
-        vertical: InitialDims.space1,
-      ),
-      child: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const FxVSpacer(
-              big: true,
-              factor: 3,
-            ),
-            ...List.generate(
-                widget.descriptionList.length,
-                (index) => _taskCards(index, dateList, widget.descriptionList,
-                    valueList, context))
-          ],
+      padding: EdgeInsets.all(16.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: List.generate(
+          descriptionList.length,
+              (index) => TaskCard(
+            date: dateList[index],
+            description: descriptionList[index],
+          ),
         ),
       ),
     );
   }
+}
 
-  Widget _taskCards(
-      int index,
-      List<String> widgetDateList,
-      List<String> widgetDescriptionList,
-      List<bool> widgetValueList,
-      BuildContext context) {
+class TaskCard extends StatefulWidget {
+  final String date;
+  final String description;
+
+  TaskCard({required this.date, required this.description});
+
+  @override
+  _TaskCardState createState() => _TaskCardState();
+}
+
+class _TaskCardState extends State<TaskCard> {
+  bool isChecked = false;
+
+  @override
+  Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(vertical: InitialDims.space2),
+      padding: EdgeInsets.symmetric(vertical: 8.0),
       child: Column(
         children: [
-          FxCustomCheckBox(
-            titleWidget: Expanded(
-              child: FxText(
-                widgetDescriptionList[index],
-                align: TextAlign.start,
-                tag: Tag.h4,
-                isBold: true,
-                color: InitialStyle.titleTextColor,
-                overFlowTag: true,
-                maxLine: 1,
-                decoration: widgetValueList[index]
-                    ? TextDecoration.lineThrough
-                    : TextDecoration.none,
+          CheckboxListTile(
+            title: Text(
+              widget.description,
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: isChecked ? Colors.grey : Colors.black,
+                decoration: isChecked ? TextDecoration.lineThrough : null,
               ),
             ),
-            value: widgetValueList[index],
+            subtitle: Text(
+              widget.date,
+              style: TextStyle(
+                color: isChecked ? Colors.grey : Colors.black,
+                decoration: isChecked ? TextDecoration.lineThrough : null,
+              ),
+            ),
+            controlAffinity: ListTileControlAffinity.leading,
+            value: isChecked,
             onChanged: (value) {
               setState(() {
-                widgetValueList[index] = value;
+                isChecked = value!;
               });
             },
-          ),
-          Row(
-            children: [
-              const FxHSpacer(
-                factor: 3,
-              ),
-              FxSvgIcon(
-                "packages/fx_flutterap_components/assets/svgs/CalendarCheck.svg",
-                size: InitialDims.icon2,
-                color: InitialStyle.icon,
-              ),
-              const FxHSpacer(),
-              FxText(
-                widgetDateList[index],
-                color: InitialStyle.secondaryTextColor,
-                tag: Tag.h5,
-                align: TextAlign.start,
-                decoration: widgetValueList[index]
-                    ? TextDecoration.lineThrough
-                    : TextDecoration.none,
-              ),
-              const FxHSpacer(),
-              FxContentLabel(
-                isUnique: true,
-                size: InitialDims.icon5,
-                color: InitialStyle.primaryLightColor,
-                textColor: InitialStyle.primaryDarkColor,
-                text: AppLocalizations.of(context)!.business,
-              ),
-            ],
           ),
         ],
       ),

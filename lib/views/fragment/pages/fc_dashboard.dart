@@ -430,8 +430,6 @@ class FcDashboard extends StatelessWidget {
                 dashboardContainerItems(
                   title: AppLocalizations.of(context)!.taskslist,
                   child: FxTasksList(
-                    descriptionList: descriptionList,
-                    valueList: valueList,
                   ),
                 ),
               ),
@@ -526,25 +524,7 @@ class FcDashboard extends StatelessWidget {
           ),
           BootstrapRow(
             children: [
-              cardShow5(
-                dashboardContainerItems(
-                  title: AppLocalizations.of(context)!.todolist,
-                  child: FxTodoList(
-                    descriptionList: descriptionList,
-                    valueList: valueList,
-                  ),
-                ),
-              ),
-              cardShow5(
-                dashboardContainerItems(
-                    title: AppLocalizations.of(context)!.mostsalesincountries,
-                    child: FxMostSalesCard(
-                      nameList: countryList,
-                      amountList: amountList,
-                      rateList: rateList,
-                      isIncresedList: isIncreasedList,
-                    )),
-              ),
+
             ],
           ),
 

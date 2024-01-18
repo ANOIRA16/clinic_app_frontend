@@ -56,6 +56,8 @@ class FxGeogorianEventCalendar extends StatefulWidget {
 }
 
 class _FxGeogorianEventCalendarState extends State<FxGeogorianEventCalendar> {
+  String _selectedPatient = 'Patient 1';
+  String _selectedDoctor = 'Doctor 1';
   final List<Appointment> _appointments = <Appointment>[];
   final CalendarController _calendarController = CalendarController();
   final TextEditingController _addController = TextEditingController();
@@ -293,54 +295,97 @@ class _FxGeogorianEventCalendarState extends State<FxGeogorianEventCalendar> {
       builder: (BuildContext context) {
         return AlertDialog(
           title: FxText(
-            AppLocalizations.of(context)!.addevent,
+            AppLocalizations.of(context)!.editevent,
           ),
           backgroundColor: InitialStyle.cardColor,
           actions: <Widget>[
             Column(
               children: [
                 FxText(
-                  AppLocalizations.of(context)!.pleaseentereventname,
+                  AppLocalizations.of(context)!.pleaseediteventname,
                 ),
                 const FxVSpacer(
                   big: true,
                 ),
                 FxTextField(
-                  controller: _addController,
+                  controller: _editController,
+                  maxLines: 7,
+                ),
+                const FxVSpacer(
+                  big: true,
+                ),
+                // Dropdown for Patients
+                DropdownButton<String>(
+                  value: _selectedPatient,
+                  onChanged: (String? newValue) {
+                    setState(() {
+                      _selectedPatient = newValue!;
+                    });
+                  },
+                  items: <String>['Patient 1', 'Patient 2', 'Patient 3', 'Patient 4']
+                      .map<DropdownMenuItem<String>>((String value) {
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: FxText(value),
+                    );
+                  }).toList(),
+                ),
+                const FxVSpacer(
+                  big: true,
+                ),
+                // Dropdown for Doctors
+                DropdownButton<String>(
+                  value: _selectedDoctor,
+                  onChanged: (String? newValue) {
+                    setState(() {
+                      _selectedDoctor = newValue!;
+                    });
+                  },
+                  items: <String>['Doctor 1', 'Doctor 2', 'Doctor 3', 'Doctor 4']
+                      .map<DropdownMenuItem<String>>((String value) {
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: FxText(value),
+                    );
+                  }).toList(),
                 ),
                 const FxVSpacer(
                   big: true,
                 ),
                 FxEnglishDatePicker(
                   title: AppLocalizations.of(context)!.pickenddate,
-                  initialTime: _dateAdd,
-                  onChange: (date) {
-                    setState(() {
-                      _dateAdd = date ?? _date;
-                    });
-                    Navigator.pop(context, date);
+                  initialTime: _dateEdit,
+                  onChange: (editDate) {
+                    // Your existing code here...
+
+                    // You can use _selectedPatient and _selectedDoctor as needed.
                   },
                 ),
                 const FxVSpacer(
                   big: true,
                 ),
-                FxButton(
-                  text: AppLocalizations.of(context)!.ok,
-                  onTap: () {
-                    setState(() {
-                      _appointments.add(
-                        Appointment(
-                          startTime: _dateAdd,
-                          endTime: _dateAdd.add(Duration(hours: 1)),
-                          subject: _addController.text,
-                        ),
-                      );
-                      _addController.text = "";
-                    });
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    InkWell(
+                      onTap: () {
+                        // Your existing code here...
+                      },
+                      child: Icon(
+                        Icons.delete,
+                        color: InitialStyle.dangerColorRegular,
+                      ),
+                    ),
+                    FxButton(
+                      text: AppLocalizations.of(context)!.ok,
+                      onTap: () {
+                        // Your existing code here...
 
-                    Navigator.pop(context);
-                  },
-                )
+                        // You can use _selectedPatient and _selectedDoctor as needed.
+                      },
+                    )
+                  ],
+                ),
               ],
             ),
           ],

@@ -251,85 +251,85 @@ class InitialStyle extends StructureStyles {
   static late Color disableColorDark;
 
   InitialStyle(
-    BuildContext context, {
-    Color? primaryColor,
-    Color? secondaryColor,
-    Color? secondaryDarkColor,
-    Color? secondaryLightColor,
-    Color? onPrimaryColor,
-    Color? onSecondaryColor,
-    Color? specificColor,
-    Color? primaryDarkColor,
-    Color? primaryLightColor,
-    Color? cardColor,
-    Color? section,
-    MaterialColor? gray,
-    Color? background,
-    Color? shadow,
-    Color? border,
-    Color? borderInput,
-    Color? hover,
-    Color? buttonHover,
-    Color? buttonTextHover,
-    Color? textHover,
-    Color? icon,
-    Color? divider,
-    Color? menu,
-    Color? black,
-    Color? hintInput,
-    Color? labelInput,
-    Color? textInput,
-    Color? secondaryBorderColor,
-    Color? backgroundInput,
-    Color? white,
-    TextStyle? inputStyle,
-    BoxDecoration? cardDecoration,
-    Color? buttonColor,
-    Color? textColor,
-    Color? secondaryTextColor,
-    Color? titleTextColor,
-    Color? sectionTitleTextColor,
-    Color? buttonTextColor,
-    Color? socialNetworkColorFacebook,
-    Color? socialNetworkColorGoogle,
-    Color? socialNetworkColorWhatsapp,
-    Color? socialNetworkColorTweeter,
-    Color? socialNetworkColorYoutube,
-    Color? socialNetworkColorLinkedin,
-    Color? socialNetworkColorInstagram,
-    Color? warningColorLight,
-    Color? warningColorRegular,
-    Color? warningColorDark,
-    Color? informationColorDark,
-    Color? informationColorLight,
-    Color? informationColorRegular,
-    Color? dangerColorRegular,
-    Color? dangerColorLight,
-    Color? dangerColorDark,
-    Color? successColorDark,
-    Color? successColorLight,
-    Color? successColorRegular,
-    Color? disableColorRegular,
-    Color? disableColorLight,
-    Color? disableColorDark,
-  }) : super(context) {
+      BuildContext context, {
+        Color? primaryColor,
+        Color? secondaryColor,
+        Color? secondaryDarkColor,
+        Color? secondaryLightColor,
+        Color? onPrimaryColor,
+        Color? onSecondaryColor,
+        Color? specificColor,
+        Color? primaryDarkColor,
+        Color? primaryLightColor,
+        Color? cardColor,
+        Color? section,
+        MaterialColor? gray,
+        Color? background,
+        Color? shadow,
+        Color? border,
+        Color? borderInput,
+        Color? hover,
+        Color? buttonHover,
+        Color? buttonTextHover,
+        Color? textHover,
+        Color? icon,
+        Color? divider,
+        Color? menu,
+        Color? black,
+        Color? hintInput,
+        Color? labelInput,
+        Color? textInput,
+        Color? secondaryBorderColor,
+        Color? backgroundInput,
+        Color? white,
+        TextStyle? inputStyle,
+        BoxDecoration? cardDecoration,
+        Color? buttonColor,
+        Color? textColor,
+        Color? secondaryTextColor,
+        Color? titleTextColor,
+        Color? sectionTitleTextColor,
+        Color? buttonTextColor,
+        Color? socialNetworkColorFacebook,
+        Color? socialNetworkColorGoogle,
+        Color? socialNetworkColorWhatsapp,
+        Color? socialNetworkColorTweeter,
+        Color? socialNetworkColorYoutube,
+        Color? socialNetworkColorLinkedin,
+        Color? socialNetworkColorInstagram,
+        Color? warningColorLight,
+        Color? warningColorRegular,
+        Color? warningColorDark,
+        Color? informationColorDark,
+        Color? informationColorLight,
+        Color? informationColorRegular,
+        Color? dangerColorRegular,
+        Color? dangerColorLight,
+        Color? dangerColorDark,
+        Color? successColorDark,
+        Color? successColorLight,
+        Color? successColorRegular,
+        Color? disableColorRegular,
+        Color? disableColorLight,
+        Color? disableColorDark,
+      }) : super(context) {
     InitialStyle.primaryColor = primaryColor ?? Color(0xff3761EB);
     InitialStyle.onPrimaryColor = onPrimaryColor ?? Color(0xffFFFFFF);
     InitialStyle.primaryDarkColor = primaryDarkColor ?? Color(0xff0C2780);
     InitialStyle.primaryLightColor = primaryLightColor ?? Color(0xffE9EDFA);
 
-    InitialStyle.secondaryColor = secondaryColor ?? Color(0xff1d5411);
+    InitialStyle.secondaryColor = secondaryColor ?? Color(0xff3395d7);
     InitialStyle.onSecondaryColor = onSecondaryColor ?? Color(0xffFFFFFF);
-    InitialStyle.secondaryDarkColor = secondaryDarkColor ?? Color(0xff0B6623);
+    InitialStyle.secondaryDarkColor = secondaryDarkColor ?? Color(0xff2b8dd0);
     InitialStyle.secondaryLightColor = secondaryLightColor ?? Color(0xff3C4252);
 
     InitialStyle.specificColor = specificColor ?? Color(0xff38BDF8);
 
     InitialStyle.buttonTextColor = buttonTextColor ?? Color(0xffFFFFFF);
-    InitialStyle.buttonColor = buttonColor ?? Color(0xff08be33);
-    InitialStyle.textColor = textColor ?? Color(0xff707479);
+    InitialStyle.buttonColor = buttonColor ?? Color(0xff1772af);
+    InitialStyle.textColor = textColor ?? Color(0xffa9a9a9);
     InitialStyle.titleTextColor = titleTextColor ?? Color(0xff0F172A);
-    InitialStyle.secondaryTextColor = secondaryTextColor ?? Color(0xffAFB3BC);
+    InitialStyle.secondaryTextColor = secondaryTextColor ?? Color(0xffffffff);
     InitialStyle.sectionTitleTextColor =
         sectionTitleTextColor ?? Color(0xffFFFFFF);
 
@@ -489,68 +489,68 @@ class DarkStyle extends StructureStyles {
   static late Color disableColorDark;
 
   DarkStyle(
-    BuildContext context, {
-    Color? primaryColor,
-    Color? secondaryColor,
-    Color? secondaryDarkColor,
-    Color? secondaryLightColor,
-    Color? onPrimaryColor,
-    Color? onSecondaryColor,
-    Color? specificColor,
-    Color? primaryDarkColor,
-    Color? primaryLightColor,
-    Color? cardColor,
-    Color? section,
-    MaterialColor? gray,
-    Color? background,
-    Color? shadow,
-    Color? border,
-    Color? borderInput,
-    Color? hover,
-    Color? buttonHover,
-    Color? buttonTextHover,
-    Color? textHover,
-    Color? icon,
-    Color? divider,
-    Color? menu,
-    Color? black,
-    Color? hintInput,
-    Color? labelInput,
-    Color? textInput,
-    Color? secondaryBorderColor,
-    Color? backgroundInput,
-    Color? white,
-    TextStyle? inputStyle,
-    BoxDecoration? cardDecoration,
-    Color? buttonColor,
-    Color? textColor,
-    Color? secondaryTextColor,
-    Color? titleTextColor,
-    Color? sectionTitleTextColor,
-    Color? buttonTextColor,
-    Color? socialNetworkColorFacebook,
-    Color? socialNetworkColorGoogle,
-    Color? socialNetworkColorWhatsapp,
-    Color? socialNetworkColorTweeter,
-    Color? socialNetworkColorYoutube,
-    Color? socialNetworkColorLinkedin,
-    Color? socialNetworkColorInstagram,
-    Color? warningColorLight,
-    Color? warningColorRegular,
-    Color? warningColorDark,
-    Color? informationColorDark,
-    Color? informationColorLight,
-    Color? informationColorRegular,
-    Color? dangerColorRegular,
-    Color? dangerColorLight,
-    Color? dangerColorDark,
-    Color? successColorDark,
-    Color? successColorLight,
-    Color? successColorRegular,
-    Color? disableColorRegular,
-    Color? disableColorLight,
-    Color? disableColorDark,
-  }) : super(context) {
+      BuildContext context, {
+        Color? primaryColor,
+        Color? secondaryColor,
+        Color? secondaryDarkColor,
+        Color? secondaryLightColor,
+        Color? onPrimaryColor,
+        Color? onSecondaryColor,
+        Color? specificColor,
+        Color? primaryDarkColor,
+        Color? primaryLightColor,
+        Color? cardColor,
+        Color? section,
+        MaterialColor? gray,
+        Color? background,
+        Color? shadow,
+        Color? border,
+        Color? borderInput,
+        Color? hover,
+        Color? buttonHover,
+        Color? buttonTextHover,
+        Color? textHover,
+        Color? icon,
+        Color? divider,
+        Color? menu,
+        Color? black,
+        Color? hintInput,
+        Color? labelInput,
+        Color? textInput,
+        Color? secondaryBorderColor,
+        Color? backgroundInput,
+        Color? white,
+        TextStyle? inputStyle,
+        BoxDecoration? cardDecoration,
+        Color? buttonColor,
+        Color? textColor,
+        Color? secondaryTextColor,
+        Color? titleTextColor,
+        Color? sectionTitleTextColor,
+        Color? buttonTextColor,
+        Color? socialNetworkColorFacebook,
+        Color? socialNetworkColorGoogle,
+        Color? socialNetworkColorWhatsapp,
+        Color? socialNetworkColorTweeter,
+        Color? socialNetworkColorYoutube,
+        Color? socialNetworkColorLinkedin,
+        Color? socialNetworkColorInstagram,
+        Color? warningColorLight,
+        Color? warningColorRegular,
+        Color? warningColorDark,
+        Color? informationColorDark,
+        Color? informationColorLight,
+        Color? informationColorRegular,
+        Color? dangerColorRegular,
+        Color? dangerColorLight,
+        Color? dangerColorDark,
+        Color? successColorDark,
+        Color? successColorLight,
+        Color? successColorRegular,
+        Color? disableColorRegular,
+        Color? disableColorLight,
+        Color? disableColorDark,
+      }) : super(context) {
     InitialStyle.primaryColor = primaryColor ?? Color(0xff233B8D);
     InitialStyle.onPrimaryColor = onPrimaryColor ?? Color(0xffFFFFFF);
     InitialStyle.primaryDarkColor = primaryDarkColor ?? Color(0xff030B1E);
@@ -589,7 +589,7 @@ class DarkStyle extends StructureStyles {
     InitialStyle.borderInput = borderInput ?? Color(0xff7B90D1);
     InitialStyle.hintInput = hintInput ?? Color(0xffFFFFFF);
     InitialStyle.labelInput = labelInput ?? Color(0xffFFFFFF);
-    InitialStyle.textInput = textInput ?? Color(0xffdae2fa);
+    InitialStyle.textInput = textInput ?? Color(0xffffffff);
     InitialStyle.secondaryBorderColor =
         secondaryBorderColor ?? Color(0xffffffff);
 
@@ -630,9 +630,9 @@ class DarkStyle extends StructureStyles {
     InitialStyle.successColorLight = successColorLight ?? Color(0xffC0FCD8);
     InitialStyle.successColorRegular = successColorRegular ?? Color(0xff02B74A);
 
-    InitialStyle.disableColorRegular = disableColorRegular ?? Color(0xffB1B1B1);
+    InitialStyle.disableColorRegular = disableColorRegular ?? Color(0xffffffff);
     InitialStyle.disableColorLight = disableColorLight ?? Color(0xffE2E2E2);
-    InitialStyle.disableColorDark = disableColorDark ?? Color(0xff575857);
+    InitialStyle.disableColorDark = disableColorDark ?? Color(0xffffffff);
 
     InitialStyle.inputStyle = inputStyle ?? super._inputStyle;
     InitialStyle.cardDecoration = cardDecoration ??

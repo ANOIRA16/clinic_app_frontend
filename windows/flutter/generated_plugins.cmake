@@ -5,6 +5,7 @@
 list(APPEND FLUTTER_PLUGIN_LIST
   audioplayers_windows
   file_saver
+  firebase_core
   local_notifier
   pasteboard
   permission_handler_windows

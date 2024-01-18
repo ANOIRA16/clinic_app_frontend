@@ -27,6 +27,13 @@ class _FxLogin extends State<FcLogin> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  String? validator(String? value) {
+    if (value == null || value.isEmpty || value.length < 4) {
+      return "The input length is too short";
+    }
+    return null;
+  }
+
 
   @override
   void dispose() {
@@ -38,7 +45,7 @@ class _FxLogin extends State<FcLogin> {
   @override
   Widget build(BuildContext context) {
     return FxAuthenticationFrame(
-      imagePath: "assets/images/signin.png",
+      imagePath: "assets/images/lock.png",
       formContent: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
@@ -85,9 +92,12 @@ class _FxLogin extends State<FcLogin> {
                   },
                 ),
                 const FxVSpacer(big: true, factor: 5),
-                FxTextFieldForm(
-                  hint: "",
-                  label: AppLocalizations.of(context)!.password,
+                TextFormField(
+                  obscureText: true,
+                  decoration: InputDecoration(
+                    hintText: "",
+                    labelText: AppLocalizations.of(context)!.password,
+                  ),
                   controller: _passwordController,
                   validator: (value) {
                     if (value!.isEmpty || value.length < 4) {
@@ -102,7 +112,7 @@ class _FxLogin extends State<FcLogin> {
                   onTap: () {
                     if (_formKey.currentState?.validate() == true) {
                       widget.onLogin?.call(_usernameController.text, _passwordController.text);
-                      if (_usernameController.text == 'demo' && _passwordController.text == 'demo') {
+                      if (_usernameController.text == 'admin' && _passwordController.text == 'admin') {
                         Navigator.pushNamed(context, '/');
                       } else {
                         ScaffoldMessenger.of(context).showSnackBar(
