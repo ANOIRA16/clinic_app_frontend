@@ -7,6 +7,26 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:fx_flutterap_components/components/fx_button/fx_block_button.dart';
 
+class Doctor {
+  int id;
+  String name;
+  String specialization;
+
+  Doctor({
+    required this.id,
+    required this.name,
+    required this.specialization,
+  });
+
+  factory Doctor.fromJson(Map<String, dynamic> json) {
+    return Doctor(
+      id: json['id'],
+      name: json['name'],
+      specialization: json['specialization'],
+    );
+  }
+}
+
 class Patient {
   String? firstName;
   String? lastName;

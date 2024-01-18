@@ -7,6 +7,26 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:dio/dio.dart';
 
+class Doctor {
+  int id;
+  String name;
+  String specialization;
+
+  Doctor({
+    required this.id,
+    required this.name,
+    required this.specialization,
+  });
+
+  factory Doctor.fromJson(Map<String, dynamic> json) {
+    return Doctor(
+      id: json['id'],
+      name: json['name'],
+      specialization: json['specialization'],
+    );
+  }
+}
+
 class Patient {
   int id;
   String name;
@@ -45,13 +65,23 @@ class FcPatientsPage extends StatefulWidget {
 }
 
 class _FcPatientsPageState extends State<FcPatientsPage> {
+  List<Doctor> doctorsList = [];
   late Future<List<Patient>> patientsFuture;
   String errorMessage = '';
 
   @override
   void initState() {
     super.initState();
+    // Initialize patientsFuture
     patientsFuture = fetchPatients();
+
+    // Fetch doctors when the widget is initialized
+    fetchDoctors().then((fetchedDoctors) {
+      setState(() {
+        // Update the state with the fetched doctors
+        doctorsList = fetchedDoctors;
+      });
+    });
   }
 
   Future<void> deletePatient(Patient patient) async {
@@ -74,34 +104,44 @@ class _FcPatientsPageState extends State<FcPatientsPage> {
     }
   }
 
-  Future<List<Patient>> fetchPatientsWithDoctors(Patient patient) async {
+  Future<Patient> fetchPatientsWithDoctors(int id) async {
     try {
       final response = await http.get(
         Uri.parse(
-          'https://patient-service-2gol.onrender.com/api/patient/fullpatient/${patient.id}',
+          'https://patient-service-2gol.onrender.com/api/patient/fullPatient/${id}',
         ),
       );
 
       if (response.statusCode == 200) {
-        List<dynamic> patientsData = json.decode(response.body);
-        List<Patient> fetchedPatients = patientsData.map((data) {
+        dynamic patientData = json.decode(response.body);
+
+        // Check if the decoded data is not null
+        if (patientData != null) {
           List<dynamic> doctorResponseJsonList =
-              data['doctorResponseList'] ?? [];
+              patientData['doctorResponseList'] ?? [];
           List<int> doctorResponseList =
           doctorResponseJsonList.map((id) => id as int).toList();
 
-          return Patient(
-            id: data['id'],
-            name: data['name'],
-            age: data['age'],
-            gender: data['gender'],
+          Patient fetchedPatient = Patient(
+            id: patientData['id'],
+            name: patientData['name'],
+            age: patientData['age'],
+            gender: patientData['gender'],
             doctorResponseList: doctorResponseList,
           );
-        }).toList();
-        return fetchedPatients;
-      } else {
-        throw Exception('Failed to load patients with doctors');
+
+          return fetchedPatient;
+        }
       }
+      return Patient(
+        id: 0,
+        name: '',
+        age: 0,
+        gender: '',
+        doctorResponseList: [],
+      );
+
+
     } catch (e) {
       errorMessage = e.toString();
       throw e;
@@ -158,11 +198,28 @@ class _FcPatientsPageState extends State<FcPatientsPage> {
     }
   }
 
+  Future<List<Doctor>> fetchDoctors() async {
+    try {
+      final response = await http.get(
+          Uri.parse('https://doctor-service-5g8m.onrender.com/api/doctor/doctors'));
+
+      if (response.statusCode == 200) {
+        List<dynamic> doctorsData = json.decode(response.body);
+        List<Doctor> fetchedDoctors = doctorsData.map((data) => Doctor.fromJson(data)).toList();
+        return fetchedDoctors;
+      } else {
+        throw Exception('Failed to load doctors');
+      }
+    } catch (e) {
+      throw e;
+    }
+  }
+
   void _showPatientInfoPopup(int patientId) async {
-    List<Patient> fullPatients = await fetchFullPatients();
+    Patient fullPatients = await fetchPatientsWithDoctors(patientId);
 
     // Find the patient with the matching ID
-    Patient selectedPatient = fullPatients.firstWhere(
+    /*Patient selectedPatient = fullPatients.firstWhere(
           (patient) => patient.id == patientId,
       orElse: () => Patient(
         id: 0,
@@ -171,7 +228,7 @@ class _FcPatientsPageState extends State<FcPatientsPage> {
         gender: '',
         doctorResponseList: [],
       ),
-    );
+    );*/
 
     // Show a dialog or a custom popup with the patient information
     showDialog(
@@ -187,21 +244,21 @@ class _FcPatientsPageState extends State<FcPatientsPage> {
                 Padding(
                   padding: const EdgeInsets.only(bottom: 8.0),
                   child: Text(
-                    'ID: ${selectedPatient.id}',
+                    'ID: ${fullPatients.id}',
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ),
                 ),
                 Padding(
                   padding: const EdgeInsets.only(bottom: 8.0),
                   child: Text(
-                    'Name: ${selectedPatient.name}',
+                    'Name: ${fullPatients.name}',
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ),
                 ),
                 Padding(
                   padding: const EdgeInsets.only(bottom: 8.0),
                   child: Text(
-                    'Age: ${selectedPatient.age}',
+                    'Age: ${fullPatients.age}',
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ),
                 ),
@@ -213,12 +270,22 @@ class _FcPatientsPageState extends State<FcPatientsPage> {
                 DataTable(
                   columns: [
                     DataColumn(label: Text('Doctor ID')),
+                    DataColumn(label: Text('Doctor Name')),
                   ],
-                  rows: selectedPatient.doctorResponseList
+                  rows: fullPatients.doctorResponseList
                       .map(
-                        (doctorId) => DataRow(cells: [
-                      DataCell(Text(doctorId.toString())),
-                    ]),
+                        (doctorId) {
+                      // Find the corresponding doctor in the doctorsList
+                      Doctor doctor = doctorsList.firstWhere(
+                            (doc) => doc.id == doctorId,
+                        orElse: () => Doctor(id: -1, name: 'Not Found', specialization: ''),
+                      );
+
+                      return DataRow(cells: [
+                        DataCell(Text(doctorId.toString())),
+                        DataCell(Text(doctor.name)),
+                      ]);
+                    },
                   )
                       .toList(),
                 ),

@@ -56,8 +56,14 @@ class _FcManageRoomsPageState extends State<FcManageRoomsPage> {
     });
   }
 
+  void clearRoomsList() {
+    setState(() {
+      roomsList = [];
+    });
+  }
+
   Future<List<Room>> fetchRooms() async {
-    final response = await http.get(Uri.parse('http://localhost:8083/api/room/rooms'));
+    final response = await http.get(Uri.parse('https://room-service-sows.onrender.com/api/room/rooms'));
     if (response.statusCode == 200) {
       List<dynamic> roomsData = json.decode(response.body);
       return roomsData.map((data) => Room.fromJson(data)).toList();
@@ -68,7 +74,7 @@ class _FcManageRoomsPageState extends State<FcManageRoomsPage> {
 
   Future<void> addRoom(Room room) async {
     final response = await http.post(
-      Uri.parse('http://localhost:8083/api/room/add'),
+      Uri.parse('https://room-service-sows.onrender.com/api/room/add'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
@@ -81,7 +87,7 @@ class _FcManageRoomsPageState extends State<FcManageRoomsPage> {
 
   Future<void> updateRoom(Room room) async {
     final response = await http.put(
-      Uri.parse('http://localhost:8083/api/room/${room.id}'),
+      Uri.parse('https://room-service-sows.onrender.com/api/room/${room.id}'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
@@ -94,13 +100,12 @@ class _FcManageRoomsPageState extends State<FcManageRoomsPage> {
 
   Future<void> deleteRoom(int roomId) async {
     final response = await http.delete(
-      Uri.parse('http://localhost:8083/api/room/${roomId}'),
+      Uri.parse('https://room-service-sows.onrender.com/api/room/${roomId}'),
     );
     if (response.statusCode != 200) {
       throw Exception('Failed to delete room');
     }
   }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -109,89 +114,96 @@ class _FcManageRoomsPageState extends State<FcManageRoomsPage> {
       ),
       body: SingleChildScrollView(
         padding: EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Text Field for entering room's ID
-            TextFormField(
-              controller: idController,
-              decoration: InputDecoration(
-                labelText: 'Room ID',
-                border: OutlineInputBorder(),
-              ),
-              keyboardType: TextInputType.number,
-            ),
-            SizedBox(height: 20),
+        child: Card(
+          elevation: 4.0,
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Text Field for entering room's ID
+                TextFormField(
+                  controller: idController,
+                  decoration: InputDecoration(
+                    labelText: 'Room ID',
+                    border: OutlineInputBorder(),
+                  ),
+                  keyboardType: TextInputType.number,
+                ),
+                SizedBox(height: 20),
 
-            // Text field for number of beds
-            TextFormField(
-              controller: bedsController,
-              decoration: InputDecoration(
-                labelText: 'Number of Beds',
-                border: OutlineInputBorder(),
-              ),
-              keyboardType: TextInputType.number,
-            ),
-            SizedBox(height: 20),
+                // Text field for number of beds
+                TextFormField(
+                  controller: bedsController,
+                  decoration: InputDecoration(
+                    labelText: 'Number of Beds',
+                    border: OutlineInputBorder(),
+                  ),
+                  keyboardType: TextInputType.number,
+                ),
+                SizedBox(height: 20),
 
-            // Text field for room category
-            TextFormField(
-              controller: categoryController,
-              decoration: InputDecoration(
-                labelText: 'Room Category',
-                border: OutlineInputBorder(),
-              ),
-            ),
-            SizedBox(height: 20),
-
-            // Button Row for Add, Update, Delete
-            Row(
-              children: <Widget>[
-                // Add Room Button
-                Expanded(
-                  child: ElevatedButton(
-                    onPressed: () async {
-                      Room newRoom = Room(
-                        beds: int.parse(bedsController.text),
-                        category: categoryController.text,
-                      );
-                      await addRoom(newRoom);
-                    },
-                    child: Text('Add Room'),
+                // Text field for room category
+                TextFormField(
+                  controller: categoryController,
+                  decoration: InputDecoration(
+                    labelText: 'Room Category',
+                    border: OutlineInputBorder(),
                   ),
                 ),
-                SizedBox(width: 10),
+                SizedBox(height: 20),
 
-                // Update Room Button
-                Expanded(
-                  child: ElevatedButton(
-                    onPressed: () async {
-                      int roomId = int.parse(idController.text);
-                      Room updatedRoom = Room(
-                        id: roomId,
-                        beds: int.parse(bedsController.text),
-                        category: categoryController.text,
-                      );
-                      await updateRoom(updatedRoom);
-                    },
-                    child: Text('Update Room'),
-                  ),
-                ),
-                SizedBox(width: 10),
+                // Button Row for Add, Update, Delete
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    // Add Room Button
+                    Expanded(
+                      child: ElevatedButton(
+                        onPressed: () async {
+                          Room newRoom = Room(
+                            beds: int.parse(bedsController.text),
+                            category: categoryController.text,
+                          );
+                          await addRoom(newRoom);
+                        },
+                        child: Text('Add Room'),
+                      ),
+                    ),
+                    SizedBox(width: 10),
 
-                // Delete Room Button
-                Expanded(
-                  child: ElevatedButton(
-                    onPressed: () async {
-                      int roomId = int.parse(idController.text);
-                      await deleteRoom(roomId);
-                    },
-                    child: Text('Delete Room'),
-                  ),
+                    // Update Room Button
+                    Expanded(
+                      child: ElevatedButton(
+                        onPressed: () async {
+                          int roomId = int.parse(idController.text);
+                          Room updatedRoom = Room(
+                            id: roomId,
+                            beds: int.parse(bedsController.text),
+                            category: categoryController.text,
+                          );
+                          await updateRoom(updatedRoom);
+                        },
+                        child: Text('Update Room'),
+                      ),
+                    ),
+                    SizedBox(width: 10),
+
+                    // Delete Room Button
+                    Expanded(
+                      child: ElevatedButton(
+                        onPressed: () async {
+                          int roomId = int.parse(idController.text);
+                          await deleteRoom(roomId);
+                        },
+                        child: Text('Delete Room'),
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),
-          ],
+          ),
         ),
       ),
     );

@@ -7,25 +7,76 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:dio/dio.dart';
 
+class Room {
+  final int roomId;
+  final int beds;
+  final String category;
+  bool isAvailable;
+
+  Room({
+    required this.roomId,
+    required this.beds,
+    required this.category,
+    this.isAvailable = true, // All rooms start as empty (available)
+  });
+
+  factory Room.fromJson(Map<String, dynamic> json) {
+    return Room(
+      roomId: json['roomId'] ?? 0,
+      beds: json['beds'] ?? 0,
+      category: json['categorie'] as String? ?? 'Unknown',
+      isAvailable: (json['beds'] as int? ?? 0) > 0,
+    );
+
+  }
+}
+
 class Patient {
   int id;
   String name;
   int age;
   String gender;
+  List<int> doctorResponseList;
 
   Patient({
     required this.id,
     required this.name,
     required this.age,
     required this.gender,
+    required this.doctorResponseList,
   });
 
   factory Patient.fromJson(Map<String, dynamic> json) {
+    List<dynamic> doctorResponseJsonList = json['doctorResponseList'] ?? [];
+    List<int> doctorResponseList =
+    doctorResponseJsonList.map((id) => id as int).toList();
+
     return Patient(
       id: json['id'],
       name: json['name'],
       age: json['age'],
       gender: json['gender'],
+      doctorResponseList: doctorResponseList,
+    );
+  }
+}
+
+class Doctor {
+  int id;
+  String name;
+  String specialization;
+
+  Doctor({
+    required this.id,
+    required this.name,
+    required this.specialization,
+  });
+
+  factory Doctor.fromJson(Map<String, dynamic> json) {
+    return Doctor(
+      id: json['id'],
+      name: json['name'],
+      specialization: json['specialization'],
     );
   }
 }
@@ -39,25 +90,111 @@ class FcManagePatientPage extends StatefulWidget {
 
 class _FcManagePatientPageState extends State<FcManagePatientPage> {
   late Future<List<Patient>> patientsFuture;
+  late Future<List<Doctor>> doctorsFuture;
   String errorMessage = '';
 
   // Placeholder data for drop-down menus
-  List<String> rooms = ['Room 1', 'Room 2', 'Room 3']; // Replace with actual room data
-  List<String> doctors = ['Doctor A', 'Doctor B', 'Doctor C']; // Replace with actual doctor data
+  List<String> rooms = []; // Replace with actual room data
 
   // Selected values for drop-down menus
-  String selectedRoom = 'Room 1';
-  String selectedDoctor = 'Doctor A';
+  String selectedRoom = '';
+  late Doctor selectedDoctor;
 
   @override
   void initState() {
     super.initState();
     patientsFuture = fetchPatients();
+    doctorsFuture = fetchDoctors();
+    fetchRooms().then((rooms) {
+      // Update the dropdown with the fetched rooms
+      setState(() {
+        this.rooms = rooms;
+        selectedRoom = rooms.isNotEmpty ? rooms.first : ''; // Set default selected room
+      });
+    });
+  }
+
+  Future<List<String>> fetchRooms() async {
+    try {
+      // Replace the URL with the endpoint to fetch rooms
+      final response = await http.get(Uri.parse('https://Room-service-sows.onrender.com/api/room/rooms'));
+
+      if (response.statusCode == 200) {
+        List<dynamic> roomsData = json.decode(response.body);
+        List<String> fetchedRooms = roomsData.map((data) => data.toString()).toList();
+
+        // Print the fetched rooms
+        fetchedRooms.forEach((room) {
+          print('Room: $room');
+        });
+
+        return fetchedRooms;
+      } else {
+        throw Exception('Failed to load rooms');
+      }
+    } catch (e) {
+      print('Error fetching rooms: $e');
+      errorMessage = e.toString();
+      throw e;
+    }
+  }
+  Future<void> assignDoctorToPatient(int patientId, int doctorId) async {
+    try {
+      final response = await http.put(
+        Uri.parse('https://patient-service-2gol.onrender.com/api/patient/$patientId'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode({'doctor_ids': [doctorId]}),
+      );
+
+      if (response.statusCode == 200) {
+        print('Doctor assigned to patient successfully');
+      } else {
+        throw Exception('Failed to assign doctor to patient');
+      }
+    } catch (e) {
+      print('Error: $e');
+      throw e;
+    }
+  }
+
+  Future<void> assignDoctorToPatientAndReload(int patientId, int doctorId) async {
+    await assignDoctorToPatient(patientId, doctorId);
+    // Reload the patient data after assigning the doctor
+    patientsFuture = fetchPatients();
+    setState(() {});
+  }
+
+  Future<List<Doctor>> fetchDoctors() async {
+    try {
+      final response =
+      await http.get(Uri.parse('https://doctor-service-5g8m.onrender.com/api/doctor/doctors'));
+
+      if (response.statusCode == 200) {
+        List<dynamic> doctorsData = json.decode(response.body);
+        List<Doctor> fetchedDoctors = doctorsData.map((data) => Doctor.fromJson(data)).toList();
+
+        // Print the fetched doctors
+        fetchedDoctors.forEach((doctor) {
+          print('Doctor ID: ${doctor.id}, Name: ${doctor.name}, Specialization: ${doctor.specialization}');
+        });
+
+        return fetchedDoctors;
+      } else {
+        throw Exception('Failed to load doctors');
+      }
+    } catch (e) {
+      print('Error fetching doctors: $e');
+      errorMessage = e.toString();
+      throw e;
+    }
   }
 
   Future<List<Patient>> fetchPatients() async {
     try {
-      final response = await http.get(Uri.parse('https://patient-service-2gol.onrender.com/api/patient/patients'));
+      final response =
+      await http.get(Uri.parse('https://patient-service-2gol.onrender.com/api/patient/patients'));
 
       if (response.statusCode == 200) {
         List<dynamic> patientsData = json.decode(response.body);
@@ -137,18 +274,34 @@ class _FcManagePatientPageState extends State<FcManagePatientPage> {
                           ),
                         ),
                         DataCell(
-                          DropdownButton<String>(
-                            value: selectedDoctor,
-                            items: doctors.map((String doctor) {
-                              return DropdownMenuItem<String>(
-                                value: doctor,
-                                child: Text(doctor),
-                              );
-                            }).toList(),
-                            onChanged: (String? newValue) {
-                              setState(() {
-                                selectedDoctor = newValue!;
-                              });
+                          FutureBuilder<List<Doctor>>(
+                            future: doctorsFuture,
+                            builder: (context, snapshot) {
+                              if (snapshot.connectionState == ConnectionState.waiting) {
+                                return CircularProgressIndicator();
+                              } else if (snapshot.hasError) {
+                                return Text('Error: ${snapshot.error}');
+                              } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                                return Text('No doctors data available.');
+                              } else {
+                                List<Doctor> doctors = snapshot.data!;
+                                selectedDoctor = doctors.first; // Set default selected doctor
+
+                                return DropdownButton<Doctor>(
+                                  value: selectedDoctor,
+                                  items: doctors.map((Doctor doctor) {
+                                    return DropdownMenuItem<Doctor>(
+                                      value: doctor,
+                                      child: Text('${doctor.id} - ${doctor.name}'),
+                                    );
+                                  }).toList(),
+                                  onChanged: (Doctor? newValue) {
+                                    setState(() {
+                                      selectedDoctor = newValue!;
+                                    });
+                                  },
+                                );
+                              }
                             },
                           ),
                         ),
