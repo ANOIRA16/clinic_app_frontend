@@ -349,7 +349,6 @@ class _FcPatientsPageState extends State<FcPatientsPage> {
       list: [
         FxContainerItems(
           title: AppLocalizations.of(context)!.patients,
-          information: "It is a patients screen located in fc_patients_page.dart",
           child: FutureBuilder<List<Patient>>(
             future: patientsFuture,
             builder: (context, snapshot) {

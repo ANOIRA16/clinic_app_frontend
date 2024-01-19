@@ -322,110 +322,33 @@ class FcDashboard extends StatelessWidget {
         children: [
           BootstrapRow(
             children: [
-              cardShow4(FxStatisticCard2(
+              cardShow3(FxStatisticCard2(
                 imagePath:
                 "packages/fx_flutterap_components/assets/svgs/profilecircle.svg",
-                number: "13",
+                number: "8",
                 description: AppLocalizations.of(context)!.followers,
                 hasGrown: false,
               )),
               cardShow3(FxStatisticCard2(
                 imagePath:
-                "packages/fx_flutterap_components/assets/svgs/shoppingcart.svg",
-                number: "97.3%",
+                "packages/fx_flutterap_components/assets/svgs/profilecircle.svg",
+                number: "6",
                 description: AppLocalizations.of(context)!.participation,
               )),
               cardShow3(FxStatisticCard2(
                 imagePath:
-                "packages/fx_flutterap_components/assets/svgs/dollarsquare.svg",
-                number: "1500\$",
-                changePercent: "2.5%",
-                description: AppLocalizations.of(context)!.adaccess,
-                hasGrown: true,
+                "packages/fx_flutterap_components/assets/svgs/list.svg",
+                number: "30",
+                description: AppLocalizations.of(context)!.participations,
               )),
-              cardShow4(FxStatisticCard2(
-                imagePath:
-                "packages/fx_flutterap_components/assets/svgs/favoritechart.svg",
-                number: "82.5K",
-                changePercent: "4.98%",
-                description: AppLocalizations.of(context)!.engagement,
-              )),
-              cardShow9(
-                FxProgressListCard(
-                  titleList: titleList,
-                  colorList: colorList,
-                  percentList: percentList,
-                ),
-              ),
-              cardShow4(
-                  FxStatisticCard2(
-                    imagePath:
-                    "packages/fx_flutterap_components/assets/svgs/favoritechart.svg",
-                    number: "88%",
-                    changePercent: "3.98%",
-                    description: AppLocalizations.of(context)!.platform_performance,
-                  )),
+
+
             ],
           ),
+
           BootstrapRow(
             children: [
-              cardShow5(
-                dashboardContainerItems(
-                    title: AppLocalizations.of(context)!.growthrate,
-                    child: FxBarChartSample4()),
-              ),
-              cardShow5(dashboardContainerItems(
-                  title: AppLocalizations.of(context)!.platformstatus,
-                  child: FxLinearChart())),
-            ],
-          ),
-          BootstrapRow(
-            children: [
-              cardShow2(FxStatisticCard1(
-                imagePath:
-                "packages/fx_flutterap_components/assets/svgs/shoppingcart.svg",
-                number: "314,314",
-                description: AppLocalizations.of(context)!.totalmonthlyorders,
-              )),
-              cardShow2(FxStatisticCard1(
-                imagePath:
-                "packages/fx_flutterap_components/assets/svgs/dollarsquare.svg",
-                number: "4,7834,143",
-                description: AppLocalizations.of(context)!.totalincomethisyear,
-              )),
-              cardShow2(FxStatisticCard1(
-                imagePath:
-                "packages/fx_flutterap_components/assets/svgs/favoritechart.svg",
-                number: "314",
-                description: AppLocalizations.of(context)!.onlinemembership,
-              )),
-              cardShow2(FxStatisticCard1(
-                imagePath:
-                "packages/fx_flutterap_components/assets/svgs/profilecircle.svg",
-                number: "71,714",
-                description: AppLocalizations.of(context)!.memberbenefits,
-              )),
-            ],
-          ),
-          BootstrapRow(
-            children: [
-              cardShow9(dashboardContainerItems(
-                  title: AppLocalizations.of(context)!.users,
-                  child: FxUserProgressBar())),
-              cardShow4(
-                dashboardContainerItems(
-                    title: AppLocalizations.of(context)!.usercomments,
-                    child: FxCommentCard()),
-              ),
-            ],
-          ),
-          BootstrapRow(
-            children: [
-              cardShow4(
-                dashboardContainerItems(
-                    title: AppLocalizations.of(context)!.profit,
-                    child: FxProfitCard()),
-              ),
+
               cardShow9(
                 dashboardContainerItems(
                   title: AppLocalizations.of(context)!.taskslist,
@@ -435,21 +358,7 @@ class FcDashboard extends StatelessWidget {
               ),
             ],
           ),
-          BootstrapRow(
-            children: [
-              cardShow4(
-                dashboardContainerItems(
-                  title: AppLocalizations.of(context)!.youhave5newmessages,
-                  child: FxNewMessages(
-                    messageList: messageList3,
-                  ),
-                ),
-              ),
-              cardShow9(dashboardContainerItems(
-                  title: AppLocalizations.of(context)!.chat,
-                  child: FxChatScreen())),
-            ],
-          ),
+
           BootstrapRow(
             children: [
               cardShow5(
@@ -470,63 +379,9 @@ class FcDashboard extends StatelessWidget {
               ),
             ],
           ),
-          BootstrapRow(
-            children: [
-              cardShow1(dashboardContainerItems(
-                title: AppLocalizations.of(context)!.tickets,
-                child: FxTicketsCard(),
-              )),
-            ],
-          ),
-          BootstrapRow(
-            children: [
-              cardShow7(
-                dashboardContainerItems(
-                  title: AppLocalizations.of(context)!.activity,
-                  child: SizedBox(
-                    height: InitialDims.space24 * 4,
-                    child: FxCircularChart(),
-                  ),
-                ),
-              ),
-            ],
-          ),
-          BootstrapRow(
-            children: [
-              cardShow4(
-                dashboardContainerItems(
-                  title: AppLocalizations.of(context)!.timeline,
-                  child: SizedBox(
-                      width: double.infinity,
-                      height: InitialDims.space25 * 4,
-                      child: FxCustomTimeLine(
-                        indicatorList: indicatorList,
-                        contentList: contentList,
-                      )),
-                ),
-              ),
-              cardShow9(dashboardContainerItems(
-                  title: AppLocalizations.of(context)!.earningreports,
-                  widgetPadding:
-                  EdgeInsets.symmetric(horizontal: InitialDims.space2),
-                  child: FxEarningReports())),
-            ],
-          ),
-          BootstrapRow(
-            children: [
-              cardShow5(dashboardContainerItems(
-                  title: AppLocalizations.of(context)!.income,
-                  child: FxIncomeCard())),
-              cardShow5(dashboardContainerItems(
-                  title: AppLocalizations.of(context)!.socialnetworkvisits,
-                  child: FxSocialNetworkVisits())),
-            ],
-          ),
-          BootstrapRow(
-            children: [
 
-            ],
-          ),
+
+
 
         ],
       ),
@@ -546,12 +401,6 @@ class FcDashboard extends StatelessWidget {
                     children: [
                       FxPageHeader(
                         title: AppLocalizations.of(context)!.dashboard,
-                      ),
-                      FxPageTitleContainer(
-                        description:
-                        AppLocalizations.of(context)!.dashboardtitle,
-                        information:
-                        "There are several dashboard card here, and you can use these components in fx_flutterap_editable_components/editable_components/fx_dashboard_card",
                       ),
                     ],
                   ),

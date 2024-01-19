@@ -93,7 +93,6 @@ class _FcCreatePatientPageState extends State<FcCreatePatientPage> {
       list: [
         FxContainerItems(
           title: AppLocalizations.of(context)!.addPatient,
-          information: "Use the form to add a new patient",
           child: Container(
             width: double.infinity,
             child: Form(

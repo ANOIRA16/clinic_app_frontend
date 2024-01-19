@@ -688,10 +688,11 @@
   "platformstatus": "Platform status",
   "growthrate": "Growth rate",
 
-  "participation": "Patient Satisfaction",
+  "participation": "Total Doctors",
+  "participations" : "Total Rooms",
   "adaccess": "Revenues",
   "engagement": "Community & Audience",
-  "platform_performance" : "Platform Performance",
+  "platform_performance" : "Platform Performance & Status",
   "saleschart": "Sales chart",
 
   "adminpaneltitle": "Project Admin View",
